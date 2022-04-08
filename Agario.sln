@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgarioModels", "AgarioModels\AgarioModels.csproj", "{19DAEA24-990B-4113-8FBF-0283A7117D2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{9F24C91B-2E42-461C-A42E-D2EBC3D7332B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Downloads\Communications.dll = ..\..\..\..\Downloads\Communications.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientGUI", "ClientGUI\ClientGUI.csproj", "{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19DAEA24-990B-4113-8FBF-0283A7117D2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19DAEA24-990B-4113-8FBF-0283A7117D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19DAEA24-990B-4113-8FBF-0283A7117D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19DAEA24-990B-4113-8FBF-0283A7117D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D9ABD08-402D-4DB9-A00D-380E41DCE1ED}
+	EndGlobalSection
+EndGlobal
