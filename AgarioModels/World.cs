@@ -1,6 +1,6 @@
 ﻿namespace AgarioModels
 {
-    public class Class1
+    public class World
     {
 
     }

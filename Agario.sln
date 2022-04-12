@@ -10,7 +10,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{9F24C91B-2
 		..\..\..\..\Downloads\Communications.dll = ..\..\..\..\Downloads\Communications.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientGUI", "ClientGUI\ClientGUI.csproj", "{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientGUI", "ClientGUI\ClientGUI.csproj", "{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TowardAgarioStepOne", "TowardAgarioStepOne\TowardAgarioStepOne.csproj", "{9A2600A4-2652-4483-9280-7BB76BFEA0F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TowardAgarioStepTwo", "TowardAgarioStepTwo\TowardAgarioStepTwo.csproj", "{3150A9C9-A203-41CA-9B84-E02EE3DA9CC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TowardAgarioStepThree", "TowardAgarioStepThree\TowardAgarioStepThree.csproj", "{24691D42-8359-42DD-9723-90C23E99287C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +32,18 @@ Global
 		{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A3DE19-95A4-4BE6-8A15-7E3FA1FB8763}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A2600A4-2652-4483-9280-7BB76BFEA0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A2600A4-2652-4483-9280-7BB76BFEA0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A2600A4-2652-4483-9280-7BB76BFEA0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A2600A4-2652-4483-9280-7BB76BFEA0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3150A9C9-A203-41CA-9B84-E02EE3DA9CC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3150A9C9-A203-41CA-9B84-E02EE3DA9CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3150A9C9-A203-41CA-9B84-E02EE3DA9CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3150A9C9-A203-41CA-9B84-E02EE3DA9CC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24691D42-8359-42DD-9723-90C23E99287C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24691D42-8359-42DD-9723-90C23E99287C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24691D42-8359-42DD-9723-90C23E99287C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24691D42-8359-42DD-9723-90C23E99287C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
