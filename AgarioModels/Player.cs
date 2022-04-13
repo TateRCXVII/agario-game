@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace AgarioModels
 {
-    public class Player
+    public class Player : GameObject
     {
+        private string name;
+
+        public Player(string name)
+        {
+            this.name = name;
+        }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
     }
 }
