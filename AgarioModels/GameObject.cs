@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgarioModels
 {
-    public class GameObject
+    public class GameObject //TODO: Make this an interface?
     {
         private long id;
         private Vector2 center;
