@@ -43,7 +43,7 @@
             this.player_name_label.AutoSize = true;
             this.player_name_label.Enabled = false;
             this.player_name_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.player_name_label.Location = new System.Drawing.Point(696, 491);
+            this.player_name_label.Location = new System.Drawing.Point(388, 303);
             this.player_name_label.Name = "player_name_label";
             this.player_name_label.Size = new System.Drawing.Size(253, 50);
             this.player_name_label.TabIndex = 0;
@@ -55,7 +55,7 @@
             this.server_label.AutoSize = true;
             this.server_label.Enabled = false;
             this.server_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.server_label.Location = new System.Drawing.Point(696, 575);
+            this.server_label.Location = new System.Drawing.Point(398, 401);
             this.server_label.Name = "server_label";
             this.server_label.Size = new System.Drawing.Size(139, 50);
             this.server_label.TabIndex = 0;
@@ -66,9 +66,9 @@
             // 
             this.player_name_box.Enabled = false;
             this.player_name_box.Font = new System.Drawing.Font("Segoe UI Semibold", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.player_name_box.Location = new System.Drawing.Point(1010, 496);
+            this.player_name_box.Location = new System.Drawing.Point(723, 307);
             this.player_name_box.Name = "player_name_box";
-            this.player_name_box.Size = new System.Drawing.Size(359, 46);
+            this.player_name_box.Size = new System.Drawing.Size(247, 46);
             this.player_name_box.TabIndex = 1;
             this.player_name_box.Visible = false;
             // 
@@ -76,9 +76,9 @@
             // 
             this.server_box.Enabled = false;
             this.server_box.Font = new System.Drawing.Font("Segoe UI Semibold", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.server_box.Location = new System.Drawing.Point(1010, 580);
+            this.server_box.Location = new System.Drawing.Point(723, 406);
             this.server_box.Name = "server_box";
-            this.server_box.Size = new System.Drawing.Size(359, 46);
+            this.server_box.Size = new System.Drawing.Size(255, 46);
             this.server_box.TabIndex = 1;
             this.server_box.Visible = false;
             // 
@@ -89,7 +89,7 @@
             this.error_label.Enabled = false;
             this.error_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.error_label.ForeColor = System.Drawing.SystemColors.MenuBar;
-            this.error_label.Location = new System.Drawing.Point(35, 1337);
+            this.error_label.Location = new System.Drawing.Point(22, 816);
             this.error_label.Name = "error_label";
             this.error_label.Size = new System.Drawing.Size(131, 50);
             this.error_label.TabIndex = 0;
@@ -101,7 +101,7 @@
             this.fps_label.AutoSize = true;
             this.fps_label.Enabled = false;
             this.fps_label.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.fps_label.Location = new System.Drawing.Point(1983, 33);
+            this.fps_label.Location = new System.Drawing.Point(1130, 12);
             this.fps_label.Name = "fps_label";
             this.fps_label.Size = new System.Drawing.Size(65, 37);
             this.fps_label.TabIndex = 0;
@@ -113,7 +113,7 @@
             this.players_label.AutoSize = true;
             this.players_label.Enabled = false;
             this.players_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.players_label.Location = new System.Drawing.Point(1927, 70);
+            this.players_label.Location = new System.Drawing.Point(1074, 49);
             this.players_label.Name = "players_label";
             this.players_label.Size = new System.Drawing.Size(114, 37);
             this.players_label.TabIndex = 0;
@@ -125,7 +125,7 @@
             this.mass_label.AutoSize = true;
             this.mass_label.Enabled = false;
             this.mass_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.mass_label.Location = new System.Drawing.Point(1960, 118);
+            this.mass_label.Location = new System.Drawing.Point(1107, 97);
             this.mass_label.Name = "mass_label";
             this.mass_label.Size = new System.Drawing.Size(85, 37);
             this.mass_label.TabIndex = 0;
@@ -137,7 +137,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.PeachPuff;
-            this.ClientSize = new System.Drawing.Size(2304, 1413);
+            this.ClientSize = new System.Drawing.Size(1373, 910);
             this.Controls.Add(this.server_box);
             this.Controls.Add(this.player_name_box);
             this.Controls.Add(this.server_label);
