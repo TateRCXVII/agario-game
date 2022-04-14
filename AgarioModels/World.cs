@@ -10,15 +10,15 @@ namespace AgarioModels
         private readonly int HEIGHT = 5000;
         private readonly int WIDTH = 5000;
         private int X = 0;
-        private int Y = 150;
+        private int Y = 0;
         private Rectangle _rect;
 
 
         //Choose between these
-        private ConcurrentBag<Player> players; //keep track of players
-        private ConcurrentBag<Food> food; //keep track of food
-        private ConcurrentDictionary<Food, Vector2> foodDict;
-        private ConcurrentDictionary<long, string> playerDict;
+        public ConcurrentBag<Player> players; //keep track of players
+        public ConcurrentBag<Food> food; //keep track of food
+        public ConcurrentDictionary<Food, Vector2> foodDict;
+        public ConcurrentDictionary<long, string> playerDict;
 
         private int _playerCount;
         private ILogger _logger;
