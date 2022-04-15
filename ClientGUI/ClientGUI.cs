@@ -67,7 +67,8 @@ namespace ClientGUI
                 if (playerY > YHEIGHT || playerY < 0.0) continue;
                
                 if(!_world.deadPlayers.Contains(player.ID))
-                    e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
+                    e.Graphics.FillEllipse(brush,(int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius);
+              //  e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
             }
         }
 
@@ -276,11 +277,15 @@ namespace ClientGUI
         }
 
         private void ScaleMouse(out float scaleX, out float scaleY)
-        {
-            //getMouse(out mouseX, out mouseY);
-
+        { 
             scaleX = mouseX;
             scaleY = mouseY;
+
+            float xDifference = scaleX - 250;
+            float yDifference = scaleY - 250;
+
+            xDifference = xDifference / XWIDTH * _world.Width * -1;
+            yDifference = yDifference / YHEIGHT * _world.Height * -1;
 
             scaleX -= OFFSET;
             scaleY -= OFFSET;
@@ -295,6 +300,9 @@ namespace ClientGUI
 
             scaleX += me.X;
             scaleY += me.Y;
+
+            scaleX += xDifference;
+            scaleY += yDifference;
         }
 
         private void ClientGUI_MouseMove(object sender, MouseEventArgs e)
