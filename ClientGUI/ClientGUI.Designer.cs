@@ -167,7 +167,6 @@
             this.Name = "ClientGUI";
             this.Tag = "";
             this.Text = "Agario Client - CS3500";
-            this.MouseHover += new System.EventHandler(this.ClientGUI_MouseHover);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ClientGUI_MouseMove);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -20,6 +20,10 @@ namespace AgarioModels
         //public ConcurrentDictionary<Food, Vector2> food;
         public ConcurrentDictionary<long, Player> players;
 
+        public ConcurrentBag<long> deadPlayers;
+
+        public ConcurrentBag<long> deadFood;
+
         private int _playerCount;
         private ILogger _logger;
 
@@ -35,6 +39,8 @@ namespace AgarioModels
             /*            players = new ConcurrentBag<Player>(); */
             food = new ConcurrentBag<Food>();
             players = new ConcurrentDictionary<long, Player>();
+            deadPlayers = new ConcurrentBag<long>();
+            deadFood = new ConcurrentBag<long>();
             //food = new ConcurrentDictionary<Food, Vector2>();
             _logger = logger;
         }

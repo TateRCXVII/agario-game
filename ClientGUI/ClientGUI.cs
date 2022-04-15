@@ -33,6 +33,9 @@ namespace ClientGUI
 
         public ClientGUI(ILogger<ClientGUI> logger)
         {
+            mouseX = 0;
+            mouseY = 0;
+
             playerID = -1;
             this.Paint += Draw_World;
             this.Paint += Draw_Food;
@@ -62,16 +65,9 @@ namespace ClientGUI
 
                 if (playerX > XWIDTH || playerX < 0.0) continue;
                 if (playerY > YHEIGHT || playerY < 0.0) continue;
-
-                if (player.ID == playerID)
-                {
-                    mouseX = player.X;
-                    mouseY = player.Y;
-                }
-                   
-             
-
-                e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
+               
+                if(!_world.deadPlayers.Contains(player.ID))
+                    e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
             }
         }
 
@@ -85,8 +81,8 @@ namespace ClientGUI
                 if (foodX > XWIDTH || foodX < 0.0) continue;
                 if (foodY > YHEIGHT || foodY < 0.0) continue;
                 SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
-
-                e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius, (int)foodRadius));
+                if (!_world.deadFood.Contains(food.ID))
+                    e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius, (int)foodRadius));
             }
         }
 
@@ -145,15 +141,6 @@ namespace ClientGUI
             //Debug.Write(message + "\n");
             string[] messages = message.Split("\n");
             Command(messages);
-
-            if (!_world.players.ContainsKey(playerID))
-                return;
-            float x = _world.players[playerID].X;
-            float y = _world.players[playerID].Y;
-           // network.Send(String.Format(Protocols.CMD_Move, x + 100, y + 100));
-            
-            //Debug.Write("X: " + x);
-            //Debug.Write("Y: " + y);
         }
 
         /// <summary>
@@ -176,20 +163,22 @@ namespace ClientGUI
                 }
                 else if (s.StartsWith(Protocols.CMD_Eaten_Food))
                 {
-                    // return s.Substring(Protocols.CMD_Eaten_Food.Length);
+                    List<long> deadFoods = JsonSerializer.Deserialize<List<long>>(s.Substring(Protocols.CMD_Eaten_Food.Length));
+                    foreach (long deadFood in deadFoods)
+                    {
+                        _world.deadFood.Add(deadFood);
+                    }
                 }
                 else if (s.StartsWith(Protocols.CMD_HeartBeat))
                 {
                     if (playerID == -1)
                         return;
 
+                    float currMouseX = mouseX;
+                    float currMouseY = mouseY;  
+                    ScaleMouse(out currMouseX, out currMouseY);
 
-                   mouseX = PointToClient(MousePosition).X;
-                    mouseY= PointToClient(MousePosition).Y;
-
-                    ScaleMouse(out mouseX, out mouseY);
-
-                    string send = String.Format(Protocols.CMD_Move, (int)mouseX, (int)mouseY);
+                    string send = String.Format(Protocols.CMD_Move, (int)currMouseX, (int)currMouseY);
                     network.Send(send);
                 }
                 else if (s.StartsWith(Protocols.CMD_Move))
@@ -226,10 +215,7 @@ namespace ClientGUI
 
                             _world.players.TryUpdate(player.ID, player,_world.players[player.ID]);
                         }
-                           
-
                     }
-
                 }
                 else if (s.StartsWith(Protocols.CMD_Player_Object))
                 {
@@ -238,7 +224,12 @@ namespace ClientGUI
                 }
                 if (s.StartsWith(Protocols.CMD_Dead_Players))
                 {
-                    //  return s.Substring(Protocols.CMD_Dead_Players.Length);
+                    List<long> deadPlayers = JsonSerializer.Deserialize<List<long>>(s.Substring(Protocols.CMD_Dead_Players.Length));
+                    foreach(long deadPlayer in deadPlayers)
+                    {
+                        _world.deadPlayers.Add(deadPlayer);
+                    } 
+                   // _world.deadPlayers = JsonSerializer.Deserialize<ConcurrentBag<long>>(s.Substring(Protocols.CMD_Dead_Players.Length));
                 }
             }
             //return "";
@@ -300,37 +291,16 @@ namespace ClientGUI
             scaleX = scaleX * _world.Width / XWIDTH;
             scaleY = scaleY * _world.Height / YHEIGHT;
 
-        }
+            Player me = _world.players[playerID];
 
-        private void ClientGUI_MouseHover(object sender, EventArgs e)
-        {
-           // int x = e.X;
+            scaleX += me.X;
+            scaleY += me.Y;
         }
 
         private void ClientGUI_MouseMove(object sender, MouseEventArgs e)
         {
-            if (playerID == -1)
-                return;
-            float x = _world.players[playerID].X;
-            float y = _world.players[playerID].Y;
-            mouseX = PointToClient(MousePosition).X;
-            mouseY = PointToClient(MousePosition).Y;
-
-            string send = String.Format(Protocols.CMD_Move, (int)x + 50, (int) y - 50);
-            network.Send(send);
-
-            // getMouse(out mouseX, out mouseY);
+            mouseX = e.X;
+            mouseY = e.Y;
         }
-
-        private void getMouse(out float mouseX, out float mouseY)
-        {
-            mouseX = PointToClient(MousePosition).X;
-            mouseY = PointToClient(MousePosition).Y;
-            Debug.WriteLine("X: " + mouseX);
-            Debug.WriteLine("Y: " + mouseY);
-        }
-        
-
-       
     }
 }
