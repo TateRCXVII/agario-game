@@ -51,17 +51,16 @@ namespace ClientGUI
 
         private void Draw_Players(object? sender, PaintEventArgs e)
         {
-
-
-            if (!playerComfirmed)
+            if (playerID == -1)
                 return;
             foreach (var player in _world.players.Values)
             {
-                ScaleWorld(player, out float playerX, out float playerY, out float playerRadius);
+                ScaleToScreen(player, out float playerX, out float playerY, out float playerRadius);
                 SolidBrush brush2 = new(Color.FromArgb((int)player.ARGBColor));
 
                 if (playerX > XWIDTH || playerX < 0.0) continue;
                 if (playerY > YHEIGHT || playerY < 0.0) continue;
+             
 
                 e.Graphics.FillEllipse(brush2, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
             }
@@ -69,11 +68,11 @@ namespace ClientGUI
 
         private void Draw_Food(object? sender, PaintEventArgs e)
         {
-            if (!playerComfirmed)
+            if (playerID == -1)
                 return;
             foreach (var food in _world.food)
             {
-                ScaleWorld(food, out float foodX, out float foodY, out float foodRadius);
+                ScaleToScreen(food, out float foodX, out float foodY, out float foodRadius);
                 if (foodX > XWIDTH || foodX < 0.0) continue;
                 if (foodY > YHEIGHT || foodY < 0.0) continue;
                 SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
@@ -130,7 +129,7 @@ namespace ClientGUI
 
         public void onMessage(Networking network, string message)
         {
-
+            //Debug.Write(message + "\n");
             string[] messages = message.Split("\n");
             Command(messages);
 
@@ -138,7 +137,8 @@ namespace ClientGUI
                 return;
             float x = _world.players[playerID].X;
             float y = _world.players[playerID].Y;
-            network.Send(String.Format(Protocols.CMD_Move, x, y));
+           // network.Send(String.Format(Protocols.CMD_Move, x + 100, y + 100));
+            
             Debug.Write("X: " + x);
             Debug.Write("Y: " + y);
         }
@@ -234,7 +234,7 @@ namespace ClientGUI
             }
         }
 
-        private void ScaleWorld(GameObject obj, out float scaleX, out float scaleY, out float scaleRadius)
+        private void ScaleToScreen(GameObject obj, out float scaleX, out float scaleY, out float scaleRadius)
         {
             Player currPlayer = _world.players[playerID];
             scaleX = currPlayer.X - obj.X;
@@ -242,6 +242,7 @@ namespace ClientGUI
 
             scaleX = scaleX / _world.Width * XWIDTH;
             scaleY = scaleY / _world.Height * YHEIGHT;
+
             float scaleMass = obj.Mass * 500 / _world.Width;
             scaleRadius = (float)Math.Sqrt(scaleMass / Math.PI);
             scaleRadius *= SCALEFACTOR;
@@ -279,8 +280,10 @@ namespace ClientGUI
         {
             if (playerID == -1)
                 return;
-            Random random = new Random();
-            //network.Send(String.Format(Protocols.CMD_Move, random.NextInt64(5000), random.NextInt64(5000)));
+            float x = _world.players[playerID].X;
+            float y = _world.players[playerID].Y;
+            string send = String.Format(Protocols.CMD_Move, 0, 0);
+            network.Send(send);
         }
     }
 }
