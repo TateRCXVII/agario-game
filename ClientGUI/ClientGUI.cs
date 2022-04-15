@@ -3,6 +3,7 @@ using Communications;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Numerics;
 using System.Text.Json;
 
 namespace ClientGUI
@@ -11,9 +12,16 @@ namespace ClientGUI
     {
         private int count;
         private Stopwatch stopwatch;
-        readonly Networking network;
+        public Networking network;
+        private Player player;
         private World _world;
         private int _fps;
+        private long playerID;
+        private string playerName;
+
+
+        private int SCALEFACTOR = 10;
+        private int OFFSET = 250;
 
         public ILogger<ClientGUI> _logger;
 
@@ -33,33 +41,35 @@ namespace ClientGUI
             InitializeComponent();
 
             _logger = logger;
-
             _world = new World(_logger);
             network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
-            network.Connect("localhost", 11000);
-            network.ClientAwaitMessagesAsync();
+
+            //For testing purposes
+            /*network.Connect("localhost", 11000);
+            network.ClientAwaitMessagesAsync();*/
         }
 
         private void Draw_Players(object? sender, PaintEventArgs e)
         {
-            foreach (var player in _world.players)
+            foreach (var player in _world.players.Values)
             {
+                ScaleWorld(player, out float playerX, out float playerY, out float playerRadius);
                 SolidBrush brush2 = new(Color.FromArgb((int)player.ARGBColor));
 
-                e.Graphics.FillEllipse(brush2, new Rectangle((int)player.X, (int)player.Y, 100, 100));
-                //e.Graphics.FillEllipse(brush2, new Rectangle((int)player.X, (int)player.Y, 30, 30));
+                e.Graphics.FillEllipse(brush2, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
             }
-
-            //throw new NotImplementedException();
         }
 
         private void Draw_Food(object? sender, PaintEventArgs e)
         {
             foreach (var food in _world.food)
             {
+                ScaleWorld(food, out float foodX, out float foodY, out float foodRadius);
+                if (foodX > 500.0 || foodX < 0.0) continue;
+                if (foodY > 500.0 || foodY < 0.0) continue;
                 SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
 
-                e.Graphics.FillEllipse(brush2, new Rectangle((int)food.X, (int)food.Y, 30, 30));
+                e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius * 2, (int)foodRadius * 2));
             }
         }
 
@@ -90,7 +100,14 @@ namespace ClientGUI
 
         public void onConnect(Networking network)
         {
-            
+            network.Send(String.Format(Protocols.CMD_Start_Game, playerName));
+            Invoke(() =>
+            {
+                player_name_box.Visible = false;
+                player_name_label.Visible = false;
+                server_box.Visible = false;
+                server_label.Visible = false;
+            });
         }
 
 
@@ -112,7 +129,7 @@ namespace ClientGUI
         /// </summary>
         /// <param name="command">input command</param>
         /// <returns>the parsed input command</returns>
-         void Command(string[] command)
+        void Command(string[] command)
         {
             foreach (string s in command)
             {
@@ -126,23 +143,23 @@ namespace ClientGUI
                 }
                 else if (s.StartsWith(Protocols.CMD_Eaten_Food))
                 {
-                   // return s.Substring(Protocols.CMD_Eaten_Food.Length);
+                    // return s.Substring(Protocols.CMD_Eaten_Food.Length);
                 }
                 else if (s.StartsWith(Protocols.CMD_HeartBeat))
                 {
-                  //  return s.Substring(Protocols.CMD_HeartBeat.Length);
+                    //  return s.Substring(Protocols.CMD_HeartBeat.Length);
                 }
                 else if (s.StartsWith(Protocols.CMD_Move))
                 {
-                   // return s.Substring(Protocols.CMD_Move.Length);
+                    // return s.Substring(Protocols.CMD_Move.Length);
                 }
                 else if (s.StartsWith(Protocols.CMD_Split))
                 {
-                   // return s.Substring(Protocols.CMD_Split.Length);
+                    // return s.Substring(Protocols.CMD_Split.Length);
                 }
                 else if (s.StartsWith(Protocols.CMD_Split_Recognizer))
                 {
-                   // return s.Substring(Protocols.CMD_Split_Recognizer.Length);
+                    // return s.Substring(Protocols.CMD_Split_Recognizer.Length);
                 }
                 else if (s.StartsWith(Protocols.CMD_Start_Game))
                 {
@@ -154,26 +171,65 @@ namespace ClientGUI
                 }
                 else if (s.StartsWith(Protocols.CMD_Move_Recognizer))
                 {
-                   // return s.Substring(Protocols.CMD_Move_Recognizer.Length);
+                    // return s.Substring(Protocols.CMD_Move_Recognizer.Length);
                 }
                 else if (s.StartsWith(Protocols.CMD_Update_Players))
                 {
                     List<Player> playerList = JsonSerializer.Deserialize<List<Player>>(s.Substring(Protocols.CMD_Update_Players.Length)); //TODO: How will we add food to world object?
                     foreach (AgarioModels.Player player in playerList)
                     {
-                        _world.players.Add(player);
+                        _world.players.TryAdd(player.ID, player);
                     }
                 }
                 else if (s.StartsWith(Protocols.CMD_Player_Object))
                 {
-                   // return s.Substring(Protocols.CMD_Player_Object.Length);
+                    playerID = long.Parse(s.Substring(Protocols.CMD_Player_Object.Length));
+                    player = new Player(playerID, new Vector2(2, 3), 250, 250, 300, 30, playerName);
                 }
                 if (s.StartsWith(Protocols.CMD_Dead_Players))
                 {
-                  //  return s.Substring(Protocols.CMD_Dead_Players.Length);
+                    //  return s.Substring(Protocols.CMD_Dead_Players.Length);
                 }
             }
             //return "";
+        }
+
+        /// <summary>
+        /// To record player anme and server name
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void player_name_box_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (player_name_box.Text == String.Empty || server_box.Text == String.Empty)
+                {
+                    return;
+                }
+                playerName = player_name_box.Text.ToString();
+                network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
+                network.Connect(server_box.Text.ToString(), 11000);
+                network.ClientAwaitMessagesAsync();
+            }
+        }
+
+        private void ScaleWorld(GameObject obj, out float scaleX, out float scaleY, out float scaleRadius)
+        {
+            Player currPlayer = _world.players[playerID];
+            scaleX = currPlayer.X - obj.X;
+            scaleY = currPlayer.Y - obj.Y;
+
+            scaleX = scaleX / _world.Width * 500;
+            scaleY = scaleY / _world.Height * 500;
+            float scaleMass = obj.Mass * 500 / _world.Width;
+            scaleRadius = (float)Math.Sqrt(scaleMass / Math.PI);
+            scaleRadius *= SCALEFACTOR;
+
+            scaleX *= SCALEFACTOR;
+            scaleY *= SCALEFACTOR;
+
+            scaleX += OFFSET;
         }
     }
 }

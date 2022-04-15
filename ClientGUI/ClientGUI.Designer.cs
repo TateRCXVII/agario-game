@@ -75,6 +75,7 @@
             this.player_name_box.Name = "player_name_box";
             this.player_name_box.Size = new System.Drawing.Size(400, 46);
             this.player_name_box.TabIndex = 1;
+            this.player_name_box.KeyDown += new System.Windows.Forms.KeyEventHandler(this.player_name_box_KeyDown);
             // 
             // server_box
             // 
