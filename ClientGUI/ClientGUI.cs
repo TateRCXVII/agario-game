@@ -21,6 +21,8 @@ namespace ClientGUI
 
         private bool playerComfirmed;
 
+        private float mouseX;
+        private float mouseY;
 
         private readonly int XWIDTH = 500;
         private readonly int YHEIGHT = 500;
@@ -56,13 +58,20 @@ namespace ClientGUI
             foreach (var player in _world.players.Values)
             {
                 ScaleToScreen(player, out float playerX, out float playerY, out float playerRadius);
-                SolidBrush brush2 = new(Color.FromArgb((int)player.ARGBColor));
+                SolidBrush brush = new(Color.FromArgb((int)player.ARGBColor));
 
                 if (playerX > XWIDTH || playerX < 0.0) continue;
                 if (playerY > YHEIGHT || playerY < 0.0) continue;
+
+                if (player.ID == playerID)
+                {
+                    mouseX = player.X;
+                    mouseY = player.Y;
+                }
+                   
              
 
-                e.Graphics.FillEllipse(brush2, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
+                e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
             }
         }
 
@@ -96,6 +105,10 @@ namespace ClientGUI
             e.Graphics.DrawRectangle(worldBrush, _world.Rectangle);
             e.Graphics.FillRectangle(brush, _world.Rectangle);
             showFPS();
+
+
+           
+
         }
 
         /// <summary>
@@ -139,8 +152,8 @@ namespace ClientGUI
             float y = _world.players[playerID].Y;
            // network.Send(String.Format(Protocols.CMD_Move, x + 100, y + 100));
             
-            Debug.Write("X: " + x);
-            Debug.Write("Y: " + y);
+            //Debug.Write("X: " + x);
+            //Debug.Write("Y: " + y);
         }
 
         /// <summary>
@@ -167,7 +180,17 @@ namespace ClientGUI
                 }
                 else if (s.StartsWith(Protocols.CMD_HeartBeat))
                 {
-                    //  return s.Substring(Protocols.CMD_HeartBeat.Length);
+                    if (playerID == -1)
+                        return;
+
+
+                   mouseX = PointToClient(MousePosition).X;
+                    mouseY= PointToClient(MousePosition).Y;
+
+                    ScaleMouse(out mouseX, out mouseY);
+
+                    string send = String.Format(Protocols.CMD_Move, (int)mouseX, (int)mouseY);
+                    network.Send(send);
                 }
                 else if (s.StartsWith(Protocols.CMD_Move))
                 {
@@ -198,8 +221,15 @@ namespace ClientGUI
                     List<Player> playerList = JsonSerializer.Deserialize<List<Player>>(s.Substring(Protocols.CMD_Update_Players.Length)); //TODO: How will we add food to world object?
                     foreach (AgarioModels.Player player in playerList)
                     {
-                        _world.players.TryAdd(player.ID, player);
+                        if (!_world.players.TryAdd(player.ID, player))
+                        {
+
+                            _world.players.TryUpdate(player.ID, player,_world.players[player.ID]);
+                        }
+                           
+
                     }
+
                 }
                 else if (s.StartsWith(Protocols.CMD_Player_Object))
                 {
@@ -254,11 +284,12 @@ namespace ClientGUI
             scaleY += OFFSET;
         }
 
-        private void scaleMouse(out float scaleX, out float scaleY)
+        private void ScaleMouse(out float scaleX, out float scaleY)
         {
-            scaleX = 0;
-            scaleY = 0;
+            //getMouse(out mouseX, out mouseY);
 
+            scaleX = mouseX;
+            scaleY = mouseY;
 
             scaleX -= OFFSET;
             scaleY -= OFFSET;
@@ -282,8 +313,24 @@ namespace ClientGUI
                 return;
             float x = _world.players[playerID].X;
             float y = _world.players[playerID].Y;
-            string send = String.Format(Protocols.CMD_Move, 0, 0);
+            mouseX = PointToClient(MousePosition).X;
+            mouseY = PointToClient(MousePosition).Y;
+
+            string send = String.Format(Protocols.CMD_Move, (int)x + 50, (int) y - 50);
             network.Send(send);
+
+            // getMouse(out mouseX, out mouseY);
         }
+
+        private void getMouse(out float mouseX, out float mouseY)
+        {
+            mouseX = PointToClient(MousePosition).X;
+            mouseY = PointToClient(MousePosition).Y;
+            Debug.WriteLine("X: " + mouseX);
+            Debug.WriteLine("Y: " + mouseY);
+        }
+        
+
+       
     }
 }
