@@ -17,8 +17,8 @@ namespace AgarioModels
         //Choose between these
         public ConcurrentBag<Player> players; //keep track of players
         public ConcurrentBag<Food> food; //keep track of food
-        public ConcurrentDictionary<Food, Vector2> foodDict;
-        public ConcurrentDictionary<long, string> playerDict;
+        /*public ConcurrentDictionary<Food, Vector2> foodDict;
+        public ConcurrentDictionary<long, string> playerDict;*/
 
         private int _playerCount;
         private ILogger _logger;
@@ -34,8 +34,8 @@ namespace AgarioModels
             _rect = new Rectangle(X, Y, WIDTH, HEIGHT);
             players = new ConcurrentBag<Player>();
             food = new ConcurrentBag<Food>();
-            playerDict = new ConcurrentDictionary<long, string>();
-            foodDict = new ConcurrentDictionary<Food, Vector2>();
+            /*playerDict = new ConcurrentDictionary<long, string>();
+            foodDict = new ConcurrentDictionary<Food, Vector2>();*/
             _logger = logger;
         }
 

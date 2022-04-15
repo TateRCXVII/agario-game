@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,8 @@ namespace AgarioModels
         private bool _isConnected;
         private bool _isAlive;
 
-        public Player(string name)
+        public Player(long id, Vector2 center, float x, float y, int ARGBColor, float mass, string name) :
+            base(id, center, x, y, ARGBColor, mass)
         {
             this._name = name;
             _isAlive = true;

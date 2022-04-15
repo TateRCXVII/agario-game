@@ -36,6 +36,8 @@ namespace ClientGUI
 
             _world = new World(_logger);
             network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
+            network.Connect("localhost", 11000);
+            network.ClientAwaitMessagesAsync();
         }
 
         private void Draw_Players(object? sender, PaintEventArgs e)
@@ -45,14 +47,26 @@ namespace ClientGUI
 
         private void Draw_Food(object? sender, PaintEventArgs e)
         {
-            //throw new NotImplementedException();
+            foreach (var food in _world.food)
+            {
+                SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
+
+                e.Graphics.FillEllipse(brush2, new Rectangle((int)food.X, (int)food.Y, 30, 30));
+            }
         }
 
+        /// <summary>
+        /// Helper method to draw the world 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Draw_World(object? sender, PaintEventArgs e)
         {
             count++;
-            Brush worldBrush = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
-            e.Graphics.FillRectangle(worldBrush, _world.Rectangle);
+            Pen worldBrush = new(new SolidBrush(Color.Black));
+            SolidBrush brush = new(Color.Gray);
+            e.Graphics.DrawRectangle(worldBrush, _world.Rectangle);
+            e.Graphics.FillRectangle(brush, _world.Rectangle);
             showFPS();
         }
 
@@ -66,28 +80,29 @@ namespace ClientGUI
         }
 
 
-        static void onConnect(Networking network)
+        public void onConnect(Networking network)
         {
 
         }
 
 
-        static void onDisconnect(Networking network)
+        public void onDisconnect(Networking network)
         {
 
         }
 
 
-        static void onMessage(Networking network, string message)
+        public void onMessage(Networking network, string message)
         {
             string[] he = message.Split("\n");
 
-            string stuff = Command(he);
-            /*food = JsonSerializer.Deserialize<ConcurrentBag<Food>>(stuff); //TODO: How will we add food to world object?
+            string command = Command(he);
+            if (command == "") return;
+            List<Food> foodList = JsonSerializer.Deserialize<List<Food>>(command); //TODO: How will we add food to world object?
             foreach (AgarioModels.Food food in foodList)
             {
-                Console.WriteLine(food);
-            }*/
+                _world.food.Add(food);
+            }
         }
 
         /// <summary>
@@ -103,7 +118,7 @@ namespace ClientGUI
                 {
                     return s.Substring(Protocols.CMD_Food.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Eaten_Food))
+                /*if (s.StartsWith(Protocols.CMD_Eaten_Food))
                 {
                     return s.Substring(Protocols.CMD_Eaten_Food.Length);
                 }
@@ -146,7 +161,7 @@ namespace ClientGUI
                 if (s.StartsWith(Protocols.CMD_Dead_Players))
                 {
                     return s.Substring(Protocols.CMD_Dead_Players.Length);
-                }
+                }*/
             }
             return "";
         }
