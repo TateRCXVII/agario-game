@@ -48,7 +48,7 @@
             this.player_name_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.player_name_label.Location = new System.Drawing.Point(388, 303);
             this.player_name_label.Name = "player_name_label";
-            this.player_name_label.Size = new System.Drawing.Size(253, 50);
+            this.player_name_label.Size = new System.Drawing.Size(131, 25);
             this.player_name_label.TabIndex = 0;
             this.player_name_label.Text = "Player Name";
             // 
@@ -61,7 +61,7 @@
             this.server_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.server_label.Location = new System.Drawing.Point(398, 401);
             this.server_label.Name = "server_label";
-            this.server_label.Size = new System.Drawing.Size(139, 50);
+            this.server_label.Size = new System.Drawing.Size(72, 25);
             this.server_label.TabIndex = 0;
             this.server_label.Text = "Server";
             // 
@@ -73,7 +73,7 @@
             this.player_name_box.Font = new System.Drawing.Font("Segoe UI Semibold", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.player_name_box.Location = new System.Drawing.Point(723, 307);
             this.player_name_box.Name = "player_name_box";
-            this.player_name_box.Size = new System.Drawing.Size(400, 46);
+            this.player_name_box.Size = new System.Drawing.Size(400, 27);
             this.player_name_box.TabIndex = 1;
             this.player_name_box.KeyDown += new System.Windows.Forms.KeyEventHandler(this.player_name_box_KeyDown);
             // 
@@ -85,8 +85,9 @@
             this.server_box.Font = new System.Drawing.Font("Segoe UI Semibold", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.server_box.Location = new System.Drawing.Point(723, 406);
             this.server_box.Name = "server_box";
-            this.server_box.Size = new System.Drawing.Size(400, 46);
+            this.server_box.Size = new System.Drawing.Size(400, 27);
             this.server_box.TabIndex = 1;
+            this.server_box.Text = "localhost";
             // 
             // error_label
             // 
@@ -97,7 +98,7 @@
             this.error_label.ForeColor = System.Drawing.SystemColors.MenuBar;
             this.error_label.Location = new System.Drawing.Point(22, 816);
             this.error_label.Name = "error_label";
-            this.error_label.Size = new System.Drawing.Size(131, 50);
+            this.error_label.Size = new System.Drawing.Size(67, 25);
             this.error_label.TabIndex = 0;
             this.error_label.Text = "Errors";
             // 
@@ -108,7 +109,7 @@
             this.fps_label.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.fps_label.Location = new System.Drawing.Point(1131, 12);
             this.fps_label.Name = "fps_label";
-            this.fps_label.Size = new System.Drawing.Size(65, 37);
+            this.fps_label.Size = new System.Drawing.Size(34, 19);
             this.fps_label.TabIndex = 0;
             this.fps_label.Text = "FPS";
             // 
@@ -119,7 +120,7 @@
             this.players_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.players_label.Location = new System.Drawing.Point(1075, 49);
             this.players_label.Name = "players_label";
-            this.players_label.Size = new System.Drawing.Size(114, 37);
+            this.players_label.Size = new System.Drawing.Size(59, 19);
             this.players_label.TabIndex = 0;
             this.players_label.Text = "Players";
             // 
@@ -130,7 +131,7 @@
             this.mass_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.mass_label.Location = new System.Drawing.Point(1108, 97);
             this.mass_label.Name = "mass_label";
-            this.mass_label.Size = new System.Drawing.Size(85, 37);
+            this.mass_label.Size = new System.Drawing.Size(45, 19);
             this.mass_label.TabIndex = 0;
             this.mass_label.Text = "Mass";
             // 
@@ -141,13 +142,13 @@
             this.fps_txt.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.fps_txt.Location = new System.Drawing.Point(1213, 12);
             this.fps_txt.Name = "fps_txt";
-            this.fps_txt.Size = new System.Drawing.Size(33, 37);
+            this.fps_txt.Size = new System.Drawing.Size(17, 19);
             this.fps_txt.TabIndex = 0;
             this.fps_txt.Text = "0";
             // 
             // ClientGUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 32F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.PeachPuff;
             this.ClientSize = new System.Drawing.Size(1374, 910);
@@ -166,6 +167,8 @@
             this.Name = "ClientGUI";
             this.Tag = "";
             this.Text = "Agario Client - CS3500";
+            this.MouseHover += new System.EventHandler(this.ClientGUI_MouseHover);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ClientGUI_MouseMove);
             this.ResumeLayout(false);
             this.PerformLayout();
 
