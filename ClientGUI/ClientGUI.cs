@@ -42,6 +42,14 @@ namespace ClientGUI
 
         private void Draw_Players(object? sender, PaintEventArgs e)
         {
+            foreach (var player in _world.players)
+            {
+                SolidBrush brush2 = new(Color.FromArgb((int)player.ARGBColor));
+
+                e.Graphics.FillEllipse(brush2, new Rectangle((int)player.X, (int)player.Y, 100, 100));
+                //e.Graphics.FillEllipse(brush2, new Rectangle((int)player.X, (int)player.Y, 30, 30));
+            }
+
             //throw new NotImplementedException();
         }
 
@@ -82,7 +90,7 @@ namespace ClientGUI
 
         public void onConnect(Networking network)
         {
-
+            
         }
 
 
@@ -96,13 +104,7 @@ namespace ClientGUI
         {
             string[] he = message.Split("\n");
 
-            string command = Command(he);
-            if (command == "") return;
-            List<Food> foodList = JsonSerializer.Deserialize<List<Food>>(command); //TODO: How will we add food to world object?
-            foreach (AgarioModels.Food food in foodList)
-            {
-                _world.food.Add(food);
-            }
+            Command(he);
         }
 
         /// <summary>
@@ -110,60 +112,68 @@ namespace ClientGUI
         /// </summary>
         /// <param name="command">input command</param>
         /// <returns>the parsed input command</returns>
-        static string Command(string[] command)
+         void Command(string[] command)
         {
             foreach (string s in command)
             {
                 if (s.StartsWith(Protocols.CMD_Food))
                 {
-                    return s.Substring(Protocols.CMD_Food.Length);
+                    List<Food> foodList = JsonSerializer.Deserialize<List<Food>>(s.Substring(Protocols.CMD_Food.Length)); //TODO: How will we add food to world object?
+                    foreach (AgarioModels.Food food in foodList)
+                    {
+                        _world.food.Add(food);
+                    }
                 }
-                /*if (s.StartsWith(Protocols.CMD_Eaten_Food))
+                else if (s.StartsWith(Protocols.CMD_Eaten_Food))
                 {
-                    return s.Substring(Protocols.CMD_Eaten_Food.Length);
+                   // return s.Substring(Protocols.CMD_Eaten_Food.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_HeartBeat))
+                else if (s.StartsWith(Protocols.CMD_HeartBeat))
                 {
-                    return s.Substring(Protocols.CMD_HeartBeat.Length);
+                  //  return s.Substring(Protocols.CMD_HeartBeat.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Move))
+                else if (s.StartsWith(Protocols.CMD_Move))
                 {
-                    return s.Substring(Protocols.CMD_Move.Length);
+                   // return s.Substring(Protocols.CMD_Move.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Split))
+                else if (s.StartsWith(Protocols.CMD_Split))
                 {
-                    return s.Substring(Protocols.CMD_Split.Length);
+                   // return s.Substring(Protocols.CMD_Split.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Split_Recognizer))
+                else if (s.StartsWith(Protocols.CMD_Split_Recognizer))
                 {
-                    return s.Substring(Protocols.CMD_Split_Recognizer.Length);
+                   // return s.Substring(Protocols.CMD_Split_Recognizer.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Start_Game))
+                else if (s.StartsWith(Protocols.CMD_Start_Game))
                 {
-                    return s.Substring(Protocols.CMD_Start_Game.Length);
+                    //return s.Substring(Protocols.CMD_Start_Game.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Start_Recognizer))
+                else if (s.StartsWith(Protocols.CMD_Start_Recognizer))
                 {
-                    return s.Substring(Protocols.CMD_Start_Recognizer.Length);
+                    //return s.Substring(Protocols.CMD_Start_Recognizer.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Move_Recognizer))
+                else if (s.StartsWith(Protocols.CMD_Move_Recognizer))
                 {
-                    return s.Substring(Protocols.CMD_Move_Recognizer.Length);
+                   // return s.Substring(Protocols.CMD_Move_Recognizer.Length);
                 }
-                if (s.StartsWith(Protocols.CMD_Update_Players))
+                else if (s.StartsWith(Protocols.CMD_Update_Players))
                 {
-                    return s.Substring(Protocols.CMD_Update_Players.Length);
+                    List<Player> playerList = JsonSerializer.Deserialize<List<Player>>(s.Substring(Protocols.CMD_Update_Players.Length)); //TODO: How will we add food to world object?
+                    foreach (AgarioModels.Player player in playerList)
+                    {
+                        _world.players.Add(player);
+                    }
                 }
-                if (s.StartsWith(Protocols.CMD_Player_Object))
+                else if (s.StartsWith(Protocols.CMD_Player_Object))
                 {
-                    return s.Substring(Protocols.CMD_Player_Object.Length);
+                   // return s.Substring(Protocols.CMD_Player_Object.Length);
                 }
                 if (s.StartsWith(Protocols.CMD_Dead_Players))
                 {
-                    return s.Substring(Protocols.CMD_Dead_Players.Length);
-                }*/
+                  //  return s.Substring(Protocols.CMD_Dead_Players.Length);
+                }
             }
-            return "";
+            //return "";
         }
     }
 }

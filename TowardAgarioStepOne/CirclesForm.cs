@@ -37,12 +37,12 @@ namespace TowardAgarioStepOne
             move_circle();
             showFPS();
 
-            SolidBrush brush = new(Color.Gray);
+            SolidBrush brush = new(Color.Blue);
             SolidBrush brush2 = new(Color.Firebrick);
             Pen pen = new(new SolidBrush(Color.Black));
 
             e.Graphics.DrawRectangle(pen, 10, 10, 510, 510);
-            e.Graphics.FillRectangle(brush, 10, 10, 510, 510);
+          //  e.Graphics.FillRectangle(brush, 10, 10, 510, 510);
             e.Graphics.FillEllipse(brush2, new Rectangle((int)center.X, (int)center.Y, 30, 30));
         }
 
