@@ -65,9 +65,15 @@ namespace ClientGUI
 
                 if (playerX > XWIDTH || playerX < 0.0) continue;
                 if (playerY > YHEIGHT || playerY < 0.0) continue;
-               
-                if(!_world.deadPlayers.Contains(player.ID))
-                    e.Graphics.FillEllipse(brush,(int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius);
+
+                if (!_world.deadPlayers.Contains(player.ID))
+                {
+                    int x = (int)(playerX - playerRadius / 2);
+                    int y = (int)(playerY - playerRadius / 2);
+                    e.Graphics.FillEllipse(brush,x, y, (int)playerRadius, (int)playerRadius);
+                    e.Graphics.DrawString(player.Name, new Font("Bold", 20, FontStyle.Regular), new SolidBrush(Color.Black), x, playerY - playerRadius);
+                }
+                   
               //  e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
             }
         }
