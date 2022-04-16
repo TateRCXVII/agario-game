@@ -1,0 +1,17 @@
+```
+Author:     Tate Reynolds
+Partner:    Thatcher Geary
+Date:       14-Apr-2022
+Course:     CS 3500, University of Utah, School of Computing
+GitHub ID:  TateRCXVII & ThatcherG
+Repo:       https://github.com/Utah-School-of-Computing-de-St-Germain/assignment-eight---agario-team
+Commit #:   5589e8eec3cf5619116944e29050cb371c091c14
+Project:   AgarioModels
+Copyright:  CS 3500 and Tate Reynolds and Thatcher Geary - This work may not be copied for use in Academic Coursework.
+```
+# Description:
+This project represents all the models needed to run the Agario game, from food to players to the actual world. The food and player objects inherit from GameObject and the World
+is its own class.
+
+# Notes:
+This code represents our work and it works as expected.
