@@ -17,6 +17,7 @@ namespace ClientGUI
                 configure.SetMinimumLevel(LogLevel.Debug);
                 configure.AddProvider(new CustomFileLogProvider());
                 configure.AddEventLog();
+                configure.SetMinimumLevel(LogLevel.Debug);
             });
 
             services.AddScoped<ClientGUI>();
@@ -36,8 +37,6 @@ namespace ClientGUI
             Application.Run(gui);
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new ClientGUI(null));
         }
     }
 }

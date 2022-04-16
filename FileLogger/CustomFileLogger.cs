@@ -23,7 +23,7 @@ namespace FileLogger
         internal CustomFileLogger(string category_name)
         {
             _category_name = category_name;
-            _file_name = "Log_CS3500_Assignment7";
+            _file_name = "Log_CS3500_Assignment8";
         }
 
         IDisposable ILogger.BeginScope<TState>(TState state)

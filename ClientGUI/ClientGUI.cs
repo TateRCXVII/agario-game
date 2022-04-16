@@ -35,6 +35,7 @@ namespace ClientGUI
         private int SCALEFACTOR = 3;
         private int OFFSET = 400;
 
+
         public ILogger<ClientGUI> _logger;
 
         private object lock1;
@@ -98,8 +99,7 @@ namespace ClientGUI
                 }
                 catch (Exception ex)
                 {
-                    Exception_label.Text = "GRAPHICS ERROR";
-                    Exception_label.Visible = true;
+                    
                 }
                 
             }
@@ -129,8 +129,7 @@ namespace ClientGUI
                 }
                 catch (Exception ex)
                 {
-                    Exception_label.Text = "GRAPHICS ERROR";
-                    Exception_label.Visible = true;
+                    
                 }
                 
             }
@@ -320,6 +319,7 @@ namespace ClientGUI
                 else if (s.StartsWith(Protocols.CMD_Player_Object))
                 {
                     playerID = long.Parse(s.Substring(Protocols.CMD_Player_Object.Length));
+                    _logger.LogDebug($"PlayerID: {playerID} has connected");
                     
                 }
                 if (s.StartsWith(Protocols.CMD_Dead_Players))
@@ -384,21 +384,16 @@ namespace ClientGUI
 
         private void ScaleToScreen(GameObject obj, out float scaleX, out float scaleY, out float scaleRadius)
         {
-            if (_world.players.ContainsKey(playerID))
-            {
+
                 Player currPlayer = _world.players[playerID];
                 playerMass = (int)currPlayer.Mass;
                
                 playerPosition.X = Reverse(currPlayer.X);
                 playerPosition.Y = Reverse(currPlayer.Y);
                 scaleX = currPlayer.X - obj.X;
-                scaleY = currPlayer.Y - obj.Y;
-            }
-            else
-            {
-                scaleX = 0 - obj.X;
-                scaleY = 0 - obj.Y;
-            }
+            scaleY = currPlayer.Y - obj.Y;
+           
+            
 
             scaleX = scaleX / _world.Width * SCREENWIDTH;
             scaleY = scaleY / _world.Height * SCREENHEIGHT;
@@ -487,7 +482,7 @@ namespace ClientGUI
 
         private void ClientGUI_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+           // network.Disconnect();
         }
     }
 
