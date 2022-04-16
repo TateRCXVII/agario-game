@@ -24,12 +24,16 @@ namespace ClientGUI
         private float mouseX;
         private float mouseY;
 
-        private readonly int XWIDTH = 500;
-        private readonly int YHEIGHT = 500;
+        private readonly int SCREENWIDTH = 500;
+        private readonly int SCREENHEIGHT = 500;
         private int SCALEFACTOR = 3;
         private int OFFSET = 250;
 
         public ILogger<ClientGUI> _logger;
+
+        private object lock1;
+        private object lock2;
+        private object lock3;
 
         public ClientGUI(ILogger<ClientGUI> logger)
         {
@@ -52,45 +56,60 @@ namespace ClientGUI
             _logger = logger;
             _world = new World(_logger);
             playerComfirmed = false;
+
+            lock1 = new object();
+            lock2 = new object();
+            lock3 = new object();
         }
 
         private void Draw_Players(object? sender, PaintEventArgs e)
         {
-            if (playerID == -1)
-                return;
-            foreach (var player in _world.players.Values)
+            lock (lock1)
             {
-                ScaleToScreen(player, out float playerX, out float playerY, out float playerRadius);
-                SolidBrush brush = new(Color.FromArgb((int)player.ARGBColor));
-
-                if (playerX > XWIDTH || playerX < 0.0) continue;
-                if (playerY > YHEIGHT || playerY < 0.0) continue;
-
-                if (!_world.deadPlayers.Contains(player.ID))
+                if (!playerComfirmed || playerID == -1)
+                    return;
+                foreach (var player in _world.players.Values)
                 {
-                    int x = (int)(playerX - playerRadius / 2);
-                    int y = (int)(playerY - playerRadius / 2);
-                    e.Graphics.FillEllipse(brush,x, y, (int)playerRadius, (int)playerRadius);
-                    e.Graphics.DrawString(player.Name, new Font("Bold", 20, FontStyle.Regular), new SolidBrush(Color.Black), x, playerY - playerRadius);
+                    if (!playerComfirmed || playerID == -1)
+                        return;
+                    ScaleToScreen(player, out float playerX, out float playerY, out float playerRadius);
+                    SolidBrush brush = new(Color.FromArgb((int)player.ARGBColor));
+
+                    if (playerX > SCREENWIDTH || playerX < 0.0) continue;
+                    if (playerY > SCREENHEIGHT || playerY < 0.0) continue;
+
+                    if (!_world.deadPlayers.Contains(player.ID))
+                    {
+                        int x = (int)(playerX - playerRadius / 2);
+                        int y = (int)(playerY - playerRadius / 2);
+                        e.Graphics.FillEllipse(brush, x, y, (int)playerRadius, (int)playerRadius);
+                        e.Graphics.DrawString(player.Name, new Font("Bold", 20, FontStyle.Regular), new SolidBrush(Color.Black), x, playerY - playerRadius);
+                    }
+
+                    //  e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
                 }
-                   
-              //  e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
             }
+           
         }
 
         private void Draw_Food(object? sender, PaintEventArgs e)
         {
-            if (playerID == -1)
-                return;
-            foreach (var food in _world.food)
+            lock (lock1)
             {
-                ScaleToScreen(food, out float foodX, out float foodY, out float foodRadius);
-                if (foodX > XWIDTH || foodX < 0.0) continue;
-                if (foodY > YHEIGHT || foodY < 0.0) continue;
-                SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
-                if (!_world.deadFood.Contains(food.ID))
-                    e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius, (int)foodRadius));
+                
+                foreach (var food in _world.food)
+                {
+                    if (!playerComfirmed || playerID == -1)
+                        return;
+                    ScaleToScreen(food, out float foodX, out float foodY, out float foodRadius);
+                    if (foodX > SCREENWIDTH || foodX < 0.0) continue;
+                    if (foodY > SCREENHEIGHT || foodY < 0.0) continue;
+                    SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
+                    if (!_world.deadFood.Contains(food.ID))
+                        e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius, (int)foodRadius));
+                }
             }
+           
         }
 
         /// <summary>
@@ -100,18 +119,16 @@ namespace ClientGUI
         /// <param name="e"></param>
         private void Draw_World(object? sender, PaintEventArgs e)
         {
-            if (!playerComfirmed)
-                return;
-            count++;
-            Pen worldBrush = new(new SolidBrush(Color.Black));
-            SolidBrush brush = new(Color.Gray);
-            e.Graphics.DrawRectangle(worldBrush, _world.Rectangle);
-            e.Graphics.FillRectangle(brush, _world.Rectangle);
-            showFPS();
-
-
-           
-
+            lock (lock1) {
+                if (!playerComfirmed || playerID == -1)
+                    return;
+                count++;
+                Pen worldBrush = new(new SolidBrush(Color.Black));
+                SolidBrush brush = new(Color.Gray);
+                e.Graphics.DrawRectangle(worldBrush, _world.Rectangle);
+                e.Graphics.FillRectangle(brush, _world.Rectangle);
+                showFPS();
+            } 
         }
 
         /// <summary>
@@ -133,6 +150,10 @@ namespace ClientGUI
                 player_name_label.Visible = false;
                 server_box.Visible = false;
                 server_label.Visible = false;
+                player_name_box.Enabled = false;
+                player_name_label.Enabled = false;
+                server_box.Enabled = false;
+                server_label.Enabled = false;
             });
         }
 
@@ -178,7 +199,7 @@ namespace ClientGUI
                 }
                 else if (s.StartsWith(Protocols.CMD_HeartBeat))
                 {
-                    if (playerID == -1)
+                    if (!playerComfirmed || playerID == -1)
                         return;
 
                     float currMouseX = mouseX;
@@ -206,11 +227,10 @@ namespace ClientGUI
                 }
                 else if (s.StartsWith(Protocols.CMD_Start_Recognizer))
                 {
-                    playerComfirmed = true;
                 }
                 else if (s.StartsWith(Protocols.CMD_Move_Recognizer))
                 {
-                    // return s.Substring(Protocols.CMD_Move_Recognizer.Length);
+
                 }
                 else if (s.StartsWith(Protocols.CMD_Update_Players))
                 {
@@ -219,21 +239,24 @@ namespace ClientGUI
                     {
                         if (!_world.players.TryAdd(player.ID, player))
                         {
-
                             _world.players.TryUpdate(player.ID, player,_world.players[player.ID]);
                         }
+                        if(player.ID == playerID)
+                            playerComfirmed = true;
                     }
                 }
                 else if (s.StartsWith(Protocols.CMD_Player_Object))
                 {
                     playerID = long.Parse(s.Substring(Protocols.CMD_Player_Object.Length));
-                    //player = new Player(playerID, new Vector2(0, 0), 250, 250, 300, 500, playerName);
+                    
                 }
                 if (s.StartsWith(Protocols.CMD_Dead_Players))
                 {
                     List<long> deadPlayers = JsonSerializer.Deserialize<List<long>>(s.Substring(Protocols.CMD_Dead_Players.Length));
                     foreach(long deadPlayer in deadPlayers)
                     {
+                        if (deadPlayer == playerID)
+                            PlayerDead();
                         _world.deadPlayers.Add(deadPlayer);
                     } 
                    // _world.deadPlayers = JsonSerializer.Deserialize<ConcurrentBag<long>>(s.Substring(Protocols.CMD_Dead_Players.Length));
@@ -256,9 +279,25 @@ namespace ClientGUI
                     return;
                 }
                 playerName = player_name_box.Text.ToString();
-                network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
-                network.Connect(server_box.Text.ToString(), 11000);
-                network.ClientAwaitMessagesAsync();
+                if (playerID == -1)
+                {
+                    network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
+                    network.Connect(server_box.Text.ToString(), 11000);
+                    network.ClientAwaitMessagesAsync();
+                }
+                else
+                {
+                    playerID = -1;
+                    network.Send(String.Format(Protocols.CMD_Start_Game, playerName));
+                    
+                    player_name_box.Visible = false;
+                    player_name_label.Visible = false;
+                    player_name_box.Enabled = false;
+                    player_name_label.Enabled = false;
+                }
+                    
+                
+               
             }
         }
 
@@ -268,8 +307,8 @@ namespace ClientGUI
             scaleX = currPlayer.X - obj.X;
             scaleY = currPlayer.Y - obj.Y;
 
-            scaleX = scaleX / _world.Width * XWIDTH;
-            scaleY = scaleY / _world.Height * YHEIGHT;
+            scaleX = scaleX / _world.Width * SCREENWIDTH;
+            scaleY = scaleY / _world.Height * SCREENHEIGHT;
 
             float scaleMass = obj.Mass * 500 / _world.Width;
             scaleRadius = (float)Math.Sqrt(scaleMass / Math.PI);
@@ -283,15 +322,18 @@ namespace ClientGUI
         }
 
         private void ScaleMouse(out float scaleX, out float scaleY)
-        { 
+        {
             scaleX = mouseX;
             scaleY = mouseY;
+
+            scaleX = ConvertOverFlow(scaleX);
+            scaleY = ConvertOverFlow(scaleY);
 
             float xDifference = scaleX - 250;
             float yDifference = scaleY - 250;
 
-            xDifference = xDifference / XWIDTH * _world.Width * -1;
-            yDifference = yDifference / YHEIGHT * _world.Height * -1;
+            xDifference = xDifference / SCREENWIDTH * _world.Width * -1;
+            yDifference = yDifference / SCREENHEIGHT * _world.Height * -1;
 
             scaleX -= OFFSET;
             scaleY -= OFFSET;
@@ -299,13 +341,13 @@ namespace ClientGUI
             scaleX /= SCALEFACTOR;
             scaleY /= SCALEFACTOR;
 
-            scaleX = scaleX * _world.Width / XWIDTH;
-            scaleY = scaleY * _world.Height / YHEIGHT;
+            scaleX = scaleX * _world.Width / SCREENWIDTH;
+            scaleY = scaleY * _world.Height / SCREENHEIGHT;
 
             Player me = _world.players[playerID];
 
             scaleX += me.X;
-            scaleY += me.Y;
+            scaleY += me.Y; 
 
             scaleX += xDifference;
             scaleY += yDifference;
@@ -315,6 +357,38 @@ namespace ClientGUI
         {
             mouseX = e.X;
             mouseY = e.Y;
+        }
+        private void ClientGUI_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!playerComfirmed || playerID == -1)
+                return;
+            float currMouseX = mouseX;
+            float currMouseY = mouseY;
+            ScaleMouse(out currMouseX, out currMouseY);
+
+            string send = String.Format(Protocols.CMD_Split, (int)currMouseX, (int)currMouseY);
+            network.Send(send);
+        }
+
+        private void PlayerDead() {
+            playerComfirmed = false;
+            Invoke(() =>
+            {
+                player_name_box.Visible = true;
+                player_name_label.Visible = true;
+                player_name_box.Enabled = true;
+                player_name_label.Enabled = true;
+            });
+        }
+
+        private float ConvertOverFlow(float value)
+        {
+            if (value > SCREENWIDTH)
+                return SCREENWIDTH;
+            if (value < 0)
+                return 0;
+            else return value;
+
         }
     }
 }
