@@ -35,8 +35,18 @@
             this.error_label = new System.Windows.Forms.Label();
             this.fps_label = new System.Windows.Forms.Label();
             this.players_label = new System.Windows.Forms.Label();
-            this.mass_label = new System.Windows.Forms.Label();
+            this.HPS_label = new System.Windows.Forms.Label();
             this.fps_txt = new System.Windows.Forms.Label();
+            this.Food_label = new System.Windows.Forms.Label();
+            this.Position_label = new System.Windows.Forms.Label();
+            this.MouseP_label = new System.Windows.Forms.Label();
+            this.Mass_label = new System.Windows.Forms.Label();
+            this.HPS_value = new System.Windows.Forms.Label();
+            this.Players_value = new System.Windows.Forms.Label();
+            this.Food_value = new System.Windows.Forms.Label();
+            this.Mass_value = new System.Windows.Forms.Label();
+            this.Position_value = new System.Windows.Forms.Label();
+            this.MouseP_value = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // player_name_label
@@ -118,22 +128,22 @@
             this.players_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.players_label.AutoSize = true;
             this.players_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.players_label.Location = new System.Drawing.Point(1075, 49);
+            this.players_label.Location = new System.Drawing.Point(1122, 93);
             this.players_label.Name = "players_label";
             this.players_label.Size = new System.Drawing.Size(59, 19);
             this.players_label.TabIndex = 0;
             this.players_label.Text = "Players";
             // 
-            // mass_label
+            // HPS_label
             // 
-            this.mass_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.mass_label.AutoSize = true;
-            this.mass_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.mass_label.Location = new System.Drawing.Point(1108, 97);
-            this.mass_label.Name = "mass_label";
-            this.mass_label.Size = new System.Drawing.Size(45, 19);
-            this.mass_label.TabIndex = 0;
-            this.mass_label.Text = "Mass";
+            this.HPS_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.HPS_label.AutoSize = true;
+            this.HPS_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.HPS_label.Location = new System.Drawing.Point(1131, 46);
+            this.HPS_label.Name = "HPS_label";
+            this.HPS_label.Size = new System.Drawing.Size(37, 19);
+            this.HPS_label.TabIndex = 0;
+            this.HPS_label.Text = "HPS";
             // 
             // fps_txt
             // 
@@ -146,6 +156,116 @@
             this.fps_txt.TabIndex = 0;
             this.fps_txt.Text = "0";
             // 
+            // Food_label
+            // 
+            this.Food_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Food_label.AutoSize = true;
+            this.Food_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Food_label.Location = new System.Drawing.Point(1131, 129);
+            this.Food_label.Name = "Food_label";
+            this.Food_label.Size = new System.Drawing.Size(44, 19);
+            this.Food_label.TabIndex = 0;
+            this.Food_label.Text = "Food";
+            // 
+            // Position_label
+            // 
+            this.Position_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Position_label.AutoSize = true;
+            this.Position_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Position_label.Location = new System.Drawing.Point(1131, 214);
+            this.Position_label.Name = "Position_label";
+            this.Position_label.Size = new System.Drawing.Size(66, 19);
+            this.Position_label.TabIndex = 0;
+            this.Position_label.Text = "Position";
+            // 
+            // MouseP_label
+            // 
+            this.MouseP_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MouseP_label.AutoSize = true;
+            this.MouseP_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.MouseP_label.Location = new System.Drawing.Point(1131, 247);
+            this.MouseP_label.Name = "MouseP_label";
+            this.MouseP_label.Size = new System.Drawing.Size(65, 19);
+            this.MouseP_label.TabIndex = 0;
+            this.MouseP_label.Text = "MouseP";
+            // 
+            // Mass_label
+            // 
+            this.Mass_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Mass_label.AutoSize = true;
+            this.Mass_label.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Mass_label.Location = new System.Drawing.Point(1131, 171);
+            this.Mass_label.Name = "Mass_label";
+            this.Mass_label.Size = new System.Drawing.Size(45, 19);
+            this.Mass_label.TabIndex = 0;
+            this.Mass_label.Text = "Mass";
+            // 
+            // HPS_value
+            // 
+            this.HPS_value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.HPS_value.AutoSize = true;
+            this.HPS_value.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.HPS_value.Location = new System.Drawing.Point(1213, 46);
+            this.HPS_value.Name = "HPS_value";
+            this.HPS_value.Size = new System.Drawing.Size(17, 19);
+            this.HPS_value.TabIndex = 0;
+            this.HPS_value.Text = "0";
+            // 
+            // Players_value
+            // 
+            this.Players_value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Players_value.AutoSize = true;
+            this.Players_value.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Players_value.Location = new System.Drawing.Point(1213, 93);
+            this.Players_value.Name = "Players_value";
+            this.Players_value.Size = new System.Drawing.Size(17, 19);
+            this.Players_value.TabIndex = 0;
+            this.Players_value.Text = "0";
+            // 
+            // Food_value
+            // 
+            this.Food_value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Food_value.AutoSize = true;
+            this.Food_value.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Food_value.Location = new System.Drawing.Point(1213, 129);
+            this.Food_value.Name = "Food_value";
+            this.Food_value.Size = new System.Drawing.Size(17, 19);
+            this.Food_value.TabIndex = 0;
+            this.Food_value.Text = "0";
+            // 
+            // Mass_value
+            // 
+            this.Mass_value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Mass_value.AutoSize = true;
+            this.Mass_value.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Mass_value.Location = new System.Drawing.Point(1213, 171);
+            this.Mass_value.Name = "Mass_value";
+            this.Mass_value.Size = new System.Drawing.Size(17, 19);
+            this.Mass_value.TabIndex = 0;
+            this.Mass_value.Text = "0";
+            // 
+            // Position_value
+            // 
+            this.Position_value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Position_value.AutoSize = true;
+            this.Position_value.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Position_value.Location = new System.Drawing.Point(1213, 214);
+            this.Position_value.Name = "Position_value";
+            this.Position_value.Size = new System.Drawing.Size(17, 19);
+            this.Position_value.TabIndex = 0;
+            this.Position_value.Text = "0";
+            // 
+            // MouseP_value
+            // 
+            this.MouseP_value.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MouseP_value.AutoSize = true;
+            this.MouseP_value.Font = new System.Drawing.Font("Segoe UI Black", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.MouseP_value.Location = new System.Drawing.Point(1213, 247);
+            this.MouseP_value.Name = "MouseP_value";
+            this.MouseP_value.Size = new System.Drawing.Size(17, 19);
+            this.MouseP_value.TabIndex = 0;
+            this.MouseP_value.Text = "0";
+            // 
             // ClientGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -156,8 +276,18 @@
             this.Controls.Add(this.player_name_box);
             this.Controls.Add(this.server_label);
             this.Controls.Add(this.error_label);
-            this.Controls.Add(this.mass_label);
+            this.Controls.Add(this.MouseP_label);
+            this.Controls.Add(this.Mass_label);
+            this.Controls.Add(this.Position_label);
+            this.Controls.Add(this.Food_label);
+            this.Controls.Add(this.HPS_label);
             this.Controls.Add(this.players_label);
+            this.Controls.Add(this.MouseP_value);
+            this.Controls.Add(this.Position_value);
+            this.Controls.Add(this.Mass_value);
+            this.Controls.Add(this.Food_value);
+            this.Controls.Add(this.Players_value);
+            this.Controls.Add(this.HPS_value);
             this.Controls.Add(this.fps_txt);
             this.Controls.Add(this.fps_label);
             this.Controls.Add(this.player_name_label);
@@ -183,8 +313,18 @@
         private Label error_label;
         private Label fps_label;
         private Label players_label;
-        private Label mass_label;
+        private Label HPS_label;
         private Label fps;
         private Label fps_txt;
+        private Label Food_label;
+        private Label Position_label;
+        private Label MouseP_label;
+        private Label Mass_label;
+        private Label HPS_value;
+        private Label Players_value;
+        private Label Food_value;
+        private Label Mass_value;
+        private Label Position_value;
+        private Label MouseP_value;
     }
 }

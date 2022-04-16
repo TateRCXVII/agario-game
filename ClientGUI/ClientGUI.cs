@@ -16,6 +16,7 @@ namespace ClientGUI
       //  private Player player;
         private World _world;
         private int _fps;
+        private int heartCount;
         private long playerID;
         private string playerName;
 
@@ -140,6 +141,14 @@ namespace ClientGUI
             Invoke(() => { fps_txt.Text = _fps.ToString(); });
         }
 
+        private void showGameStats()
+        {
+            int hps = (int)(heartCount / stopwatch.Elapsed.TotalSeconds);
+            Invoke(() => { 
+                fps_txt.Text = _fps.ToString(); 
+
+            });
+        }
 
         public void onConnect(Networking network)
         {
@@ -208,6 +217,8 @@ namespace ClientGUI
 
                     string send = String.Format(Protocols.CMD_Move, (int)currMouseX, (int)currMouseY);
                     network.Send(send);
+
+                    heartCount++;
                 }
                 else if (s.StartsWith(Protocols.CMD_Move))
                 {
