@@ -9,6 +9,8 @@ namespace AgarioModels
     {
         private readonly int HEIGHT = 5000;
         private readonly int WIDTH = 5000;
+        private readonly int SCREENWIDTH = 500;
+        private readonly int SCREENHEIGHT = 500;
         private int X = 0;
         private int Y = 0;
         private Rectangle _rect;
@@ -35,7 +37,7 @@ namespace AgarioModels
         {
             _playerCount = 0;
             //Represents the world
-            _rect = new Rectangle(X, Y, 500, 500);
+            _rect = new Rectangle(X, Y, SCREENWIDTH, SCREENHEIGHT);
             /*            players = new ConcurrentBag<Player>(); */
             food = new ConcurrentBag<Food>();
             players = new ConcurrentDictionary<long, Player>();

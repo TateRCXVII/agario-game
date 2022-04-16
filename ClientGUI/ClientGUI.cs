@@ -341,7 +341,7 @@ namespace ClientGUI
             scaleX = scaleX / _world.Width * SCREENWIDTH;
             scaleY = scaleY / _world.Height * SCREENHEIGHT;
 
-            float scaleMass = obj.Mass * 500 / _world.Width;
+            float scaleMass = obj.Mass * SCREENWIDTH / _world.Width;
             scaleRadius = (float)Math.Sqrt(scaleMass / Math.PI);
             scaleRadius *= SCALEFACTOR;
 
@@ -360,8 +360,8 @@ namespace ClientGUI
             scaleX = ConvertOverFlow(scaleX);
             scaleY = ConvertOverFlow(scaleY);
 
-            float xDifference = scaleX - 250;
-            float yDifference = scaleY - 250;
+            float xDifference = scaleX - SCREENWIDTH/2;
+            float yDifference = scaleY - SCREENHEIGHT / 2;
 
             xDifference = xDifference / SCREENWIDTH * _world.Width * -1;
             yDifference = yDifference / SCREENHEIGHT * _world.Height * -1;
