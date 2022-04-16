@@ -15,3 +15,7 @@ is its own class.
 
 # Notes:
 This code represents our work and it works as expected.
+
+# References:
+ 1.ConcurrentDictionary<TKey,TValue> Class - https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=net-6.0
+ 2.ConcurrentBag<T> Class - https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentbag-1?view=net-6.0

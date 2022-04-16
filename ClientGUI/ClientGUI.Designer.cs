@@ -103,6 +103,7 @@
             this.server_box.Size = new System.Drawing.Size(400, 27);
             this.server_box.TabIndex = 1;
             this.server_box.Text = "localhost";
+            this.server_box.KeyDown += new System.Windows.Forms.KeyEventHandler(this.server_box_KeyDown);
             // 
             // error_label
             // 
@@ -374,7 +375,6 @@
             this.Name = "ClientGUI";
             this.Tag = "";
             this.Text = "Agario Client - CS3500";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientGUI_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ClientGUI_KeyDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ClientGUI_MouseMove);
             this.ResumeLayout(false);

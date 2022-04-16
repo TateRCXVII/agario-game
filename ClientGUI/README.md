@@ -16,3 +16,7 @@ functions as expected. It allows the user to connect to a server, eat food, spli
 # Notes:
 Our FPS for some reason hovers at 20 and sometimes increases. This could be a flaw in the math, or it could be because our Zoom sessions slows the code down.
 This represents our own work.
+
+# References:
+ 1.ConcurrentDictionary<TKey,TValue> Class - https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=net-6.0
+ 2.ConcurrentBag<T> Class - https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentbag-1?view=net-6.0
