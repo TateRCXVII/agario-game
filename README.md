@@ -38,8 +38,10 @@ We tested things as we implemented new features. For example, when we wanted to 
 3. Split and have some splits get eaten.
 4. Keep eating.
 5. Get killed.
-6. Reconnect with a different name.
+6. Rejoin game with a different name.
 7. Disconnect.
+8. Attempt to connect incorrect server
+9. play with multiple clients
 
 # Bottlenecks of our code
 Drawing is definitely more of a bottleneck. Eventhough the network sends 3000 food bits at the start, redrawing the screen 30 times per second is quite strenuous and is hard to streamline, even with double-buffering. The networking code only works in sending bits and bytes across a TCP network, redrawing takes much more CPU and memory than that.
