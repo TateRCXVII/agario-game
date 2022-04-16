@@ -28,8 +28,13 @@ We decied to follow the example pretty closely to get as much functionality out 
 
 # Branching
 We had one branch when Tate's schedule got busy and conflicted with Thatcher's. Thatcher put a lot of work in on the project overnight, so he branched and did all his work on that, then merged everything back to master. 
+There was also a failed attempt to scale and zoom the screen this branch was left behind
 ##### Branch: ThatcherAttemptsZoom
 ##### Commits:8c968b81d7bb4b1a1a3ac92a3d0fe1c17ab631ab -> 1cc88d7e9419dfb99e29d87f736a65f51c0fa243
+
+##### Branch: ScaleAttempt
+##### Commits:944e33ab086229a1bd87e0397da42e5624a9c10f
+
 
 # Testing
 We tested things as we implemented new features. For example, when we wanted to test if we could connect to the server and receive food, we made the client auto-connect and saw if a bunch of colorful dots populated the screen. We followed this piece-by-piece process for the rest of the development phase and just tested as we went. We also had a series of tests we would run when we got our game running:
