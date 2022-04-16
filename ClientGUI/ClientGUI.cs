@@ -17,6 +17,12 @@ namespace ClientGUI
         private World _world;
         private int _fps;
         private int heartCount;
+        private int playerCount;
+        private int foodCount;
+        private int mass;
+        private Vector2 position;
+        private Vector2 mousePosition;
+
         private long playerID;
         private string playerName;
 
@@ -61,6 +67,8 @@ namespace ClientGUI
             lock1 = new object();
             lock2 = new object();
             lock3 = new object();
+            position = new Vector2(0, 0);
+            mousePosition = new Vector2(0, 0);
         }
 
         private void Draw_Players(object? sender, PaintEventArgs e)
@@ -129,6 +137,7 @@ namespace ClientGUI
                 e.Graphics.DrawRectangle(worldBrush, _world.Rectangle);
                 e.Graphics.FillRectangle(brush, _world.Rectangle);
                 showFPS();
+                showGameStats();
             } 
         }
 
@@ -144,9 +153,13 @@ namespace ClientGUI
         private void showGameStats()
         {
             int hps = (int)(heartCount / stopwatch.Elapsed.TotalSeconds);
-            Invoke(() => { 
-                fps_txt.Text = _fps.ToString(); 
-
+                Invoke(() => { 
+                HPS_value.Text = hps.ToString(); 
+                Players_value.Text = playerCount.ToString();
+                Food_value.Text = foodCount.ToString();
+                Mass_value.Text = mass.ToString();
+                Position_value.Text = position.ToString();
+                MouseP_value.Text = mousePosition.ToString();
             });
         }
 
@@ -192,11 +205,13 @@ namespace ClientGUI
                 if (s.StartsWith(Protocols.CMD_Food))
                 {
                     playerComfirmed = true;
-                    List<Food> foodList = JsonSerializer.Deserialize<List<Food>>(s.Substring(Protocols.CMD_Food.Length)); //TODO: How will we add food to world object?
+                    List<Food> foodList = JsonSerializer.Deserialize<List<Food>>(s.Substring(Protocols.CMD_Food.Length));
+                   
                     foreach (AgarioModels.Food food in foodList)
                     {
                         _world.food.Add(food);
                     }
+                    
                 }
                 else if (s.StartsWith(Protocols.CMD_Eaten_Food))
                 {
@@ -205,6 +220,7 @@ namespace ClientGUI
                     {
                         _world.deadFood.Add(deadFood);
                     }
+                    foodCount = _world.food.Count - _world.deadFood.Count;
                 }
                 else if (s.StartsWith(Protocols.CMD_HeartBeat))
                 {
@@ -245,7 +261,8 @@ namespace ClientGUI
                 }
                 else if (s.StartsWith(Protocols.CMD_Update_Players))
                 {
-                    List<Player> playerList = JsonSerializer.Deserialize<List<Player>>(s.Substring(Protocols.CMD_Update_Players.Length)); //TODO: How will we add food to world object?
+                    List<Player> playerList = JsonSerializer.Deserialize<List<Player>>(s.Substring(Protocols.CMD_Update_Players.Length)); 
+                    playerCount = playerList.Count;
                     foreach (AgarioModels.Player player in playerList)
                     {
                         if (!_world.players.TryAdd(player.ID, player))
@@ -315,6 +332,9 @@ namespace ClientGUI
         private void ScaleToScreen(GameObject obj, out float scaleX, out float scaleY, out float scaleRadius)
         {
             Player currPlayer = _world.players[playerID];
+            mass = (int) currPlayer.Mass;
+            position.X = currPlayer.X;
+            position.Y = currPlayer.Y;
             scaleX = currPlayer.X - obj.X;
             scaleY = currPlayer.Y - obj.Y;
 
@@ -362,6 +382,11 @@ namespace ClientGUI
 
             scaleX += xDifference;
             scaleY += yDifference;
+
+            mousePosition.X = scaleX;
+            mousePosition.Y = scaleY;
+
+
         }
 
         private void ClientGUI_MouseMove(object sender, MouseEventArgs e)
