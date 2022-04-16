@@ -47,6 +47,11 @@
             this.Mass_value = new System.Windows.Forms.Label();
             this.Position_value = new System.Windows.Forms.Label();
             this.MouseP_value = new System.Windows.Forms.Label();
+            this.Dead_label = new System.Windows.Forms.Label();
+            this.Disconnected_label = new System.Windows.Forms.Label();
+            this.Exception_label = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // player_name_label
@@ -266,6 +271,73 @@
             this.MouseP_value.TabIndex = 0;
             this.MouseP_value.Text = "0";
             // 
+            // Dead_label
+            // 
+            this.Dead_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Dead_label.AutoSize = true;
+            this.Dead_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Dead_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Dead_label.Location = new System.Drawing.Point(751, 195);
+            this.Dead_label.Name = "Dead_label";
+            this.Dead_label.Size = new System.Drawing.Size(110, 25);
+            this.Dead_label.TabIndex = 0;
+            this.Dead_label.Text = "YOU DIED!";
+            // 
+            // Disconnected_label
+            // 
+            this.Disconnected_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Disconnected_label.AutoSize = true;
+            this.Disconnected_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Disconnected_label.ForeColor = System.Drawing.Color.Blue;
+            this.Disconnected_label.Location = new System.Drawing.Point(751, 165);
+            this.Disconnected_label.Name = "Disconnected_label";
+            this.Disconnected_label.Size = new System.Drawing.Size(159, 25);
+            this.Disconnected_label.TabIndex = 0;
+            this.Disconnected_label.Text = "DISCONNECTED";
+            // 
+            // Exception_label
+            // 
+            this.Exception_label.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Exception_label.AutoSize = true;
+            this.Exception_label.BackColor = System.Drawing.Color.IndianRed;
+            this.Exception_label.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Exception_label.ForeColor = System.Drawing.SystemColors.MenuBar;
+            this.Exception_label.Location = new System.Drawing.Point(106, 816);
+            this.Exception_label.Name = "Exception_label";
+            this.Exception_label.Size = new System.Drawing.Size(312, 25);
+            this.Exception_label.TabIndex = 0;
+            this.Exception_label.Text = "FAILED TO CONNECT TO SERVER";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.IndianRed;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.SystemColors.MenuBar;
+            this.label2.Location = new System.Drawing.Point(-168, 1097);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(312, 25);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "FAILED TO CONNECT TO SERVER";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.IndianRed;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Black", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.ForeColor = System.Drawing.SystemColors.MenuBar;
+            this.label4.Location = new System.Drawing.Point(-539, 1503);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(312, 25);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "FAILED TO CONNECT TO SERVER";
+            // 
             // ClientGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -275,6 +347,9 @@
             this.Controls.Add(this.server_box);
             this.Controls.Add(this.player_name_box);
             this.Controls.Add(this.server_label);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.Exception_label);
             this.Controls.Add(this.error_label);
             this.Controls.Add(this.MouseP_label);
             this.Controls.Add(this.Mass_label);
@@ -290,6 +365,8 @@
             this.Controls.Add(this.HPS_value);
             this.Controls.Add(this.fps_txt);
             this.Controls.Add(this.fps_label);
+            this.Controls.Add(this.Disconnected_label);
+            this.Controls.Add(this.Dead_label);
             this.Controls.Add(this.player_name_label);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI Black", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -297,6 +374,7 @@
             this.Name = "ClientGUI";
             this.Tag = "";
             this.Text = "Agario Client - CS3500";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClientGUI_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ClientGUI_KeyDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ClientGUI_MouseMove);
             this.ResumeLayout(false);
@@ -326,5 +404,10 @@
         private Label Mass_value;
         private Label Position_value;
         private Label MouseP_value;
+        private Label Dead_label;
+        private Label Disconnected_label;
+        private Label Exception_label;
+        private Label label2;
+        private Label label4;
     }
 }

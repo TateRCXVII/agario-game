@@ -65,6 +65,9 @@ namespace ClientGUI
             lock1 = new object();
             playerPosition = new Vector2(0, 0);
             mousePosition = new Vector2(0, 0);
+            Disconnected_label.Visible = false;
+            Dead_label.Visible = false;
+            Exception_label.Visible = false;
         }
 
         private void Draw_Players(object? sender, PaintEventArgs e)
@@ -73,22 +76,32 @@ namespace ClientGUI
             {
                 if (!playerComfirmed || playerID == -1)
                     return;
-                foreach (var player in _world.players.Values)
+                try
                 {
-                    ScaleToScreen(player, out float playerX, out float playerY, out float playerRadius);
-                    SolidBrush brush = new(Color.FromArgb((int)player.ARGBColor));
-
-                    if (playerX > SCREENWIDTH || playerX < 0.0) continue;
-                    if (playerY > SCREENHEIGHT || playerY < 0.0) continue;
-
-                    if (!_world.deadPlayers.Contains(player.ID))
+                    foreach (var player in _world.players.Values)
                     {
-                        int x = (int)(playerX - playerRadius* 1.1);
-                        int y = (int)(playerY - playerRadius* 1.1);
-                        e.Graphics.FillEllipse(brush, x, y, (int)playerRadius * 2, (int)playerRadius * 2);
-                        e.Graphics.DrawString(player.Name, new Font("Bold", 20, FontStyle.Regular), new SolidBrush(Color.Black), x, playerY - playerRadius);
+
+                        ScaleToScreen(player, out float playerX, out float playerY, out float playerRadius);
+                        SolidBrush brush = new(Color.FromArgb((int)player.ARGBColor));
+
+                        if (playerX > SCREENWIDTH || playerX < 0.0) continue;
+                        if (playerY > SCREENHEIGHT || playerY < 0.0) continue;
+
+                        if (!_world.deadPlayers.Contains(player.ID))
+                        {
+                            int x = (int)(playerX - playerRadius * 1.1);
+                            int y = (int)(playerY - playerRadius * 1.1);
+                            e.Graphics.FillEllipse(brush, x, y, (int)playerRadius * 2, (int)playerRadius * 2);
+                            e.Graphics.DrawString(player.Name, new Font("Bold", 20, FontStyle.Regular), new SolidBrush(Color.Black), x, playerY - playerRadius);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Exception_label.Text = "GRAPHICS ERROR";
+                    Exception_label.Visible = true;
+                }
+                
             }
            
         }
@@ -97,20 +110,29 @@ namespace ClientGUI
         {
             lock (lock1)
             {
-                if (!playerComfirmed || playerID == -1)
-                    return;
-                foreach (var food in _world.food)
+                try
                 {
-                   
-                    ScaleToScreen(food, out float foodX, out float foodY, out float foodRadius);
-                    if (foodX > SCREENWIDTH || foodX < 0.0) continue;
-                    if (foodY > SCREENHEIGHT || foodY < 0.0) continue;
-                    SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
-                    int x = (int)(foodX - foodRadius * 1.1);
-                    int y = (int)(foodY - foodRadius * 1.1);
-                    if (!_world.deadFood.Contains(food.ID))
-                        e.Graphics.FillEllipse(brush2, new Rectangle((int)x, (int)y, (int)foodRadius * 2, (int)foodRadius * 2));
+                    if (!playerComfirmed || playerID == -1)
+                        return;
+                    foreach (var food in _world.food)
+                    {
+
+                        ScaleToScreen(food, out float foodX, out float foodY, out float foodRadius);
+                        if (foodX > SCREENWIDTH || foodX < 0.0) continue;
+                        if (foodY > SCREENHEIGHT || foodY < 0.0) continue;
+                        SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
+                        int x = (int)(foodX - foodRadius * 1.1);
+                        int y = (int)(foodY - foodRadius * 1.1);
+                        if (!_world.deadFood.Contains(food.ID))
+                            e.Graphics.FillEllipse(brush2, new Rectangle((int)x, (int)y, (int)foodRadius * 2, (int)foodRadius * 2));
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Exception_label.Text = "GRAPHICS ERROR";
+                    Exception_label.Visible = true;
+                }
+                
             }
            
         }
@@ -127,7 +149,7 @@ namespace ClientGUI
                     return;
                 count++;
                 Pen worldBrush = new(new SolidBrush(Color.Black));
-                SolidBrush brush = new(Color.Gray);
+                SolidBrush brush = new(Color.White);
                 e.Graphics.DrawRectangle(worldBrush, _world.Rectangle);
                 e.Graphics.FillRectangle(brush, _world.Rectangle);
                 showFPS();
@@ -176,14 +198,39 @@ namespace ClientGUI
 
         public void onDisconnect(Networking network)
         {
-
+            Invoke(() =>
+            {
+                player_name_box.Visible = true;
+                player_name_label.Visible = true;
+                server_box.Visible = true;
+                server_label.Visible = true;
+                player_name_box.Enabled = true;
+                player_name_label.Enabled = true;
+                server_box.Enabled = true;
+                server_label.Enabled = true;
+                start = true;
+                playerID = -1;
+                playerComfirmed = false;
+                _world.players.Clear();
+                _world.deadPlayers.Clear();
+                _world.food.Clear();
+                _world.deadFood.Clear();
+                Disconnected_label.Visible = true;
+            });
         }
 
 
         public void onMessage(Networking network, string message)
         {
             string[] messages = message.Split("\n");
-            Command(messages);
+            try
+            {
+                Command(messages);
+            }
+            catch(Exception e){
+                Exception_label.Text = "JSON ERROR";
+            }
+            
         }
 
         /// <summary>
@@ -306,14 +353,24 @@ namespace ClientGUI
                 playerName = player_name_box.Text.ToString();
                 if (start)
                 {
-                    network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
-                    network.Connect(server_box.Text.ToString(), 11000);
-                    network.ClientAwaitMessagesAsync();
-                    start = false;
+                    try
+                    {
+                        network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
+                        network.Connect(server_box.Text.ToString(), 11000);
+                        network.ClientAwaitMessagesAsync();
+                        start = false;
+                        Disconnected_label.Visible = false;
+                        Exception_label.Visible = false;
+                    }
+                    catch(Exception ex)
+                    {
+                        Exception_label.Text = "FAILED TO CONNECT TO SERVER";
+                        Exception_label.Visible = true;
+                    }
+                    
                 }
                 else
                 {
-                    
                     network.Send(String.Format(Protocols.CMD_Start_Game, playerName));
                     
                     player_name_box.Visible = false;
@@ -321,6 +378,7 @@ namespace ClientGUI
                     player_name_box.Enabled = false;
                     player_name_label.Enabled = false;
                 }
+                Dead_label.Visible = false;
             }
         }
 
@@ -408,6 +466,7 @@ namespace ClientGUI
                 player_name_label.Visible = true;
                 player_name_box.Enabled = true;
                 player_name_label.Enabled = true;
+                Dead_label.Visible = true;
             });
         }
 
@@ -424,6 +483,11 @@ namespace ClientGUI
         private float Reverse(float input)
         {
             return input + (2500 - input) * 2;
+        }
+
+        private void ClientGUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
     }
 
