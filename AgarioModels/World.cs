@@ -28,8 +28,6 @@ namespace AgarioModels
 
         public int playerCount;
         public int foodCount;
-        public int mass;
-        public Vector2 position;
         private ILogger _logger;
 
         /// <summary>
@@ -38,7 +36,6 @@ namespace AgarioModels
         /// <param name="logger">an ilogger</param>
         public World(ILogger logger)
         {
-            position = new Vector2(0,0);
             //Represents the world
             _rect = new Rectangle(X, Y, SCREENWIDTH, SCREENHEIGHT);
             /*            players = new ConcurrentBag<Player>(); */

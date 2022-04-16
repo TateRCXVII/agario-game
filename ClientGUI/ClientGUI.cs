@@ -11,12 +11,15 @@ namespace ClientGUI
     public partial class ClientGUI : Form
     {
         private int count;
+        private bool start;
         private Stopwatch stopwatch;
         public Networking network;
       //  private Player player;
         private World _world;
         private int _fps;
         private int heartCount;
+        private int playerMass;
+        private Vector2 playerPosition;
         private Vector2 mousePosition;
 
         private long playerID;
@@ -43,6 +46,7 @@ namespace ClientGUI
             mouseX = 0;
             mouseY = 0;
 
+            start = true;
             playerID = -1;
             this.Paint += Draw_World;
             this.Paint += Draw_Food;
@@ -63,6 +67,7 @@ namespace ClientGUI
             lock1 = new object();
             lock2 = new object();
             lock3 = new object();
+            playerPosition = new Vector2(0, 0);
             mousePosition = new Vector2(0, 0);
         }
 
@@ -150,8 +155,8 @@ namespace ClientGUI
                 HPS_value.Text = hps.ToString(); 
                 Players_value.Text = _world.playerCount.ToString();
                 Food_value.Text = _world.foodCount.ToString();
-                Mass_value.Text = _world.mass.ToString();
-                Position_value.Text = _world.position.ToString();
+                Mass_value.Text = playerMass.ToString();
+                Position_value.Text = playerPosition.ToString();
                 MouseP_value.Text = mousePosition.ToString();
             });
         }
@@ -300,15 +305,16 @@ namespace ClientGUI
                     return;
                 }
                 playerName = player_name_box.Text.ToString();
-                if (playerID == -1)
+                if (start)
                 {
                     network = new Networking(_logger, onConnect, onDisconnect, onMessage, '\n');
                     network.Connect(server_box.Text.ToString(), 11000);
                     network.ClientAwaitMessagesAsync();
+                    start = false;
                 }
                 else
                 {
-                    playerID = -1;
+                    
                     network.Send(String.Format(Protocols.CMD_Start_Game, playerName));
                     
                     player_name_box.Visible = false;
@@ -324,12 +330,20 @@ namespace ClientGUI
 
         private void ScaleToScreen(GameObject obj, out float scaleX, out float scaleY, out float scaleRadius)
         {
-            Player currPlayer = _world.players[playerID];
-            _world.mass = (int) currPlayer.Mass;
-            _world.position.X = currPlayer.X;
-            _world.position.Y = currPlayer.Y;
-            scaleX = currPlayer.X - obj.X;
-            scaleY = currPlayer.Y - obj.Y;
+            if (_world.players.ContainsKey(playerID))
+            {
+                Player currPlayer = _world.players[playerID];
+                playerMass = (int)currPlayer.Mass;
+                playerPosition.X = currPlayer.X;
+                playerPosition.Y = currPlayer.Y;
+                scaleX = currPlayer.X - obj.X;
+                scaleY = currPlayer.Y - obj.Y;
+            }
+            else
+            {
+                scaleX = 0 - obj.X;
+                scaleY = 0 - obj.Y;
+            }
 
             scaleX = scaleX / _world.Width * SCREENWIDTH;
             scaleY = scaleY / _world.Height * SCREENHEIGHT;
@@ -401,6 +415,7 @@ namespace ClientGUI
 
         private void PlayerDead() {
             playerComfirmed = false;
+            playerID = -1;
             Invoke(() =>
             {
                 player_name_box.Visible = true;
