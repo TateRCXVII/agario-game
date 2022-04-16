@@ -9,8 +9,8 @@ namespace AgarioModels
     {
         private readonly int HEIGHT = 5000;
         private readonly int WIDTH = 5000;
-        private readonly int SCREENWIDTH = 500;
-        private readonly int SCREENHEIGHT = 500;
+        private readonly int SCREENWIDTH = 800;
+        private readonly int SCREENHEIGHT = 800;
         private int X = 0;
         private int Y = 0;
         private Rectangle _rect;

@@ -30,16 +30,14 @@ namespace ClientGUI
         private float mouseX;
         private float mouseY;
 
-        private readonly int SCREENWIDTH = 500;
-        private readonly int SCREENHEIGHT = 500;
+        private readonly int SCREENWIDTH = 800;
+        private readonly int SCREENHEIGHT = 800;
         private int SCALEFACTOR = 3;
-        private int OFFSET = 250;
+        private int OFFSET = 400;
 
         public ILogger<ClientGUI> _logger;
 
         private object lock1;
-        private object lock2;
-        private object lock3;
 
         public ClientGUI(ILogger<ClientGUI> logger)
         {
@@ -65,8 +63,6 @@ namespace ClientGUI
             playerComfirmed = false;
 
             lock1 = new object();
-            lock2 = new object();
-            lock3 = new object();
             playerPosition = new Vector2(0, 0);
             mousePosition = new Vector2(0, 0);
         }
@@ -87,13 +83,11 @@ namespace ClientGUI
 
                     if (!_world.deadPlayers.Contains(player.ID))
                     {
-                        int x = (int)(playerX - playerRadius / 2);
-                        int y = (int)(playerY - playerRadius / 2);
+                        int x = (int)(playerX - playerRadius* 1.1);
+                        int y = (int)(playerY - playerRadius* 1.1);
                         e.Graphics.FillEllipse(brush, x, y, (int)playerRadius * 2, (int)playerRadius * 2);
                         e.Graphics.DrawString(player.Name, new Font("Bold", 20, FontStyle.Regular), new SolidBrush(Color.Black), x, playerY - playerRadius);
                     }
-
-                    //  e.Graphics.FillEllipse(brush, new Rectangle((int)playerX, (int)playerY, (int)playerRadius, (int)playerRadius));
                 }
             }
            
@@ -112,8 +106,10 @@ namespace ClientGUI
                     if (foodX > SCREENWIDTH || foodX < 0.0) continue;
                     if (foodY > SCREENHEIGHT || foodY < 0.0) continue;
                     SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
+                    int x = (int)(foodX - foodRadius * 1.1);
+                    int y = (int)(foodY - foodRadius * 1.1);
                     if (!_world.deadFood.Contains(food.ID))
-                        e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius * 2, (int)foodRadius * 2));
+                        e.Graphics.FillEllipse(brush2, new Rectangle((int)x, (int)y, (int)foodRadius * 2, (int)foodRadius * 2));
                 }
             }
            
@@ -186,7 +182,6 @@ namespace ClientGUI
 
         public void onMessage(Networking network, string message)
         {
-            //Debug.Write(message + "\n");
             string[] messages = message.Split("\n");
             Command(messages);
         }
@@ -326,9 +321,6 @@ namespace ClientGUI
                     player_name_box.Enabled = false;
                     player_name_label.Enabled = false;
                 }
-                    
-                
-               
             }
         }
 
