@@ -89,7 +89,7 @@ namespace ClientGUI
                     {
                         int x = (int)(playerX - playerRadius / 2);
                         int y = (int)(playerY - playerRadius / 2);
-                        e.Graphics.FillEllipse(brush, x, y, (int)playerRadius, (int)playerRadius);
+                        e.Graphics.FillEllipse(brush, x, y, (int)playerRadius * 2, (int)playerRadius * 2);
                         e.Graphics.DrawString(player.Name, new Font("Bold", 20, FontStyle.Regular), new SolidBrush(Color.Black), x, playerY - playerRadius);
                     }
 
@@ -113,7 +113,7 @@ namespace ClientGUI
                     if (foodY > SCREENHEIGHT || foodY < 0.0) continue;
                     SolidBrush brush2 = new(Color.FromArgb((int)food.ARGBColor));
                     if (!_world.deadFood.Contains(food.ID))
-                        e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius, (int)foodRadius));
+                        e.Graphics.FillEllipse(brush2, new Rectangle((int)foodX, (int)foodY, (int)foodRadius * 2, (int)foodRadius * 2));
                 }
             }
            
@@ -207,6 +207,8 @@ namespace ClientGUI
                    
                     foreach (AgarioModels.Food food in foodList)
                     {
+                        food.X = Reverse(food.X);
+                        food.Y = Reverse(food.Y);
                         _world.food.Add(food);
                     }
                     
@@ -263,6 +265,8 @@ namespace ClientGUI
                     _world.playerCount = playerList.Count;
                     foreach (AgarioModels.Player player in playerList)
                     {
+                        player.X = Reverse(player.X);
+                        player.Y = Reverse(player.Y);
                         if (!_world.players.TryAdd(player.ID, player))
                         {
                             _world.players.TryUpdate(player.ID, player,_world.players[player.ID]);
@@ -334,8 +338,9 @@ namespace ClientGUI
             {
                 Player currPlayer = _world.players[playerID];
                 playerMass = (int)currPlayer.Mass;
-                playerPosition.X = currPlayer.X;
-                playerPosition.Y = currPlayer.Y;
+               
+                playerPosition.X = Reverse(currPlayer.X);
+                playerPosition.Y = Reverse(currPlayer.Y);
                 scaleX = currPlayer.X - obj.X;
                 scaleY = currPlayer.Y - obj.Y;
             }
@@ -367,12 +372,6 @@ namespace ClientGUI
             scaleX = ConvertOverFlow(scaleX);
             scaleY = ConvertOverFlow(scaleY);
 
-            float xDifference = scaleX - SCREENWIDTH/2;
-            float yDifference = scaleY - SCREENHEIGHT / 2;
-
-            xDifference = xDifference / SCREENWIDTH * _world.Width * -1;
-            yDifference = yDifference / SCREENHEIGHT * _world.Height * -1;
-
             scaleX -= OFFSET;
             scaleY -= OFFSET;
 
@@ -384,16 +383,11 @@ namespace ClientGUI
 
             Player me = _world.players[playerID];
 
-            scaleX += me.X;
-            scaleY += me.Y; 
-
-            scaleX += xDifference;
-            scaleY += yDifference;
+            scaleX += Reverse(me.X);
+            scaleY += Reverse(me.Y); 
 
             mousePosition.X = scaleX;
             mousePosition.Y = scaleY;
-
-
         }
 
         private void ClientGUI_MouseMove(object sender, MouseEventArgs e)
@@ -434,5 +428,11 @@ namespace ClientGUI
             else return value;
 
         }
+
+        private float Reverse(float input)
+        {
+            return input + (2500 - input) * 2;
+        }
     }
+
 }
