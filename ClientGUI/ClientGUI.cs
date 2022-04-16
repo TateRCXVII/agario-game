@@ -642,7 +642,6 @@ namespace ClientGUI
                     Exception_label.Text = "FAILED TO CONNECT TO SERVER";
                     Exception_label.Visible = true;
                 }
-
             }
             else
             {
