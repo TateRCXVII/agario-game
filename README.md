@@ -11,6 +11,9 @@ Copyright:  CS 3500 and Tate Reynolds and Thatcher Geary - This work may not be 
 ```
 * __Trello (Our Sprint Board): https://trello.com/invite/b/iKPyIGNE/6a14375be53aa15c2473cc75eb74d840/冰淇淋：agario-sprint-board__
 
+# Description
+Agario is a game where you spawn as a colorful ball and try to grow in size by eating the other colorful balls. As you grow, you're able to eat other players who are smaller than you to "kill" them. By eating them, you grow by their size and can dominate the world around you.
+
 # Time Tracking
 |               | Expected | Actual | Notes                                                                                                               |
 |---------------|----------|--------|---------------------------------------------------------------------------------------------------------------------|
@@ -40,3 +43,17 @@ We tested things as we implemented new features. For example, when we wanted to 
 
 # Bottlenecks of our code
 Drawing is definitely more of a bottleneck. Eventhough the network sends 3000 food bits at the start, redrawing the screen 30 times per second is quite strenuous and is hard to streamline, even with double-buffering. The networking code only works in sending bits and bytes across a TCP network, redrawing takes much more CPU and memory than that.
+
+# Team Reflection
+We work well together! Thatcher worked quite a bit with TAs and overnight on his own in order to figure some of the details out, but we often came together to code and discuss more ideas as we should. It was exciting to make progress and see the progress either we made or Thatcher had made. This was a great step-up from the last networking assignment.
+
+# Consulted Peers:
+- Sanjay Gounder
+- TA Hours
+
+# References:
+1. Timer: https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=net-6.0
+2. JSON: https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-6-0
+3. Different Windows Forms: https://www.codeproject.com/Questions/998268/WinForm-UI-different-views-on-the-same-form
+4. Graphics Class: https://docs.microsoft.com/en-us/dotnet/api/system.drawing.graphics?view=dotnet-plat-ext-6.0
+5. Keydown vs. Keypress vs. Keyup: https://thisthat.dev/keydown-vs-keypress-vs-keyup/
