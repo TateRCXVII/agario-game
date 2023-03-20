@@ -11,6 +11,8 @@ Copyright:  CS 3500 and Tate Reynolds and Thatcher Geary - This work may not be 
 ```
 * __Trello (Our Sprint Board): https://trello.com/invite/b/iKPyIGNE/6a14375be53aa15c2473cc75eb74d840/冰淇淋：agario-sprint-board__
 
+# NOTE: If you are a U of U Student, I have embedded code which will flag gradescope in the binaries of these files! DO NOT USE FOR ACADEMIC PURPOSES
+
 # Description
 Agario is a game where you spawn as a colorful ball and try to grow in size by eating the other colorful balls. As you grow, you're able to eat other players who are smaller than you to "kill" them. By eating them, you grow by their size and can dominate the world around you.
 
